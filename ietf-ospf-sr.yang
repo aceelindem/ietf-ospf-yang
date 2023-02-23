@@ -1,64 +1,60 @@
 module ietf-ospf-sr {
-  yang-version 1.1;  
+  yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr";
 
   prefix ospf-sr;
 
   import ietf-inet-types {
     prefix "inet";
+    reference "RFC 6991 - Common YANG Data Types";
   }
 
   import ietf-yang-types {
     prefix "yang";
+    reference "RFC 6991 - Common YANG Data Types";
   }
 
   import ietf-routing {
     prefix "rt";
+    reference "RFC 8349 - A YANG Data Model for Routing
+               Management (NMDA Version)";
   }
-  
-  import ietf-routing-types {
-    prefix "rt-types";
-    reference
-          "RFC 8294: Common YANG Data Types for the Routing Area.                                                                                                Section 3.";
-  }
-  
   import ietf-segment-routing-common {
-       prefix "sr-cmn";
-       reference
-         "RFC 9020: YANG Data Model for Segment Routing";
+    prefix "sr-cmn";
+    reference "RFC 9020 - YANG Data Model for Segment
+               Routing";
   }
-  
   import ietf-segment-routing-mpls {
-       prefix "sr-mpls";
-       reference
-         "RFC 9020: YANG Data Model for Segment Routing";
+    prefix "sr-mpls";
+    reference "RFC 9020 - YANG Data Model for Segment
+               Routing";
   }
-  
   import ietf-ospf {
     prefix "ospf";
+    reference "RFC 9129 - YANG Data Model for the OSPF
+               Protocol";
   }
 
-  
   organization
-      "IETF Link State Routing (lsr) Working Group";
+    "IETF LSR - Link State Routing Working Group";
 
   contact
-      "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
-       WG List:  <mailto:lsr@ietf.org>
+     "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
+      WG List:  <mailto:lsr@ietf.org>
 
-      Editor:   Acee Lindem
-                <mailto:acee.ietf@gmail.com>
-      Author:   Yingzhen Qu
-                <mailto:yingzhen.qu@futurwei.com>
       Author:   Derek Yeung
                 <mailto:derek@arrcus.com>
+      Author:   Yingzhen Qu
+                <mailto:yingzhen.qu@futurewei.com>
+      Author:   Acee Lindem
+                <mailto:acee@cisco.com>
       Author:   Jeffrey Zhang
                 <mailto:zzhang@juniper.net>
       Author:   Ing-Wher Chen
                 <mailto:ingwherchen@mitre.org>
       Author:   Greg Hankins
                 <mailto:greg.hankins@alcatel-lucent.com>";
-  
+
   description
     "This YANG module defines the generic configuration
      and operational state for OSPF Segment Routing, which is
@@ -67,6 +63,9 @@ module ietf-ospf-sr {
      define vendor-specific OSPF Segment Routing configuration
      and operational parameters and policies.
 
+     This YANG model conforms to the Network Management
+     Datastore Architecture (NMDA) as described in RFC 8342.
+
      Copyright (c) 2023 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
@@ -74,14 +73,26 @@ module ietf-ospf-sr {
      without modification, is permitted pursuant to, and subject to
      the license terms contained in, the Revised BSD License set
      forth in Section 4.c of the IETF Trust's Legal Provisions
-     Relating to IETF Documents (https://trustee.ietf.org/license-info).
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
 
      This version of this YANG module is part of RFC XXXX
      (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
      for full legal notices.
-    ";
 
-  revision 2023-02-23 {
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.
+
+     This version of this YANG module is part of RFC XXXX;
+     see the RFC itself for full legal notices.";
+
+  reference "RFC XXXX";
+
+  revision 2023-01-01 {
     description
       "Initial revision.";
     reference
@@ -94,16 +105,254 @@ module ietf-ospf-sr {
        computation using segment routing.";
   }
 
+  identity prefix-sid-bit {
+    description
+      "Base identity for prefix sid sub-tlv bits.";
+  }
+
+  identity np-bit {
+    base prefix-sid-bit;
+    description
+      "No-PHP flag.";
+  }
+  
+  identity m-bit {
+    base prefix-sid-bit;
+    description
+      "Mapping server flag.";
+  }
+  
+  identity e-bit {
+    base prefix-sid-bit;
+    description
+      "Explicit-NULL flag.";
+  }
+  
+  identity v-bit {
+    base prefix-sid-bit;
+    description
+      "Value/Index flag.";
+  }
+  
+  identity l-bit {
+    base prefix-sid-bit;
+    description
+      "Local flag.";
+  }
+
+  identity extended-prefix-range-bit {
+    description
+      "Base identity for extended prefix range TLV bits.";
+  }
+
+  identity ia-bit {
+    base extended-prefix-range-bit;
+    description 
+      "Inter-Area flag. If set, advertisement is of inter-area type.";
+  }
+
+  identity adj-sid-bit {
+    description
+      "Base identity for adj sid sub-tlv bits.";
+  }
+ 
+  identity  b-bit {
+    base adj-sid-bit;
+    description
+      "Backup flag.";
+  }
+  
+  identity vi-bit {
+    base adj-sid-bit;
+    description
+      "Value/Index flag.";
+  }
+  
+  identity lo-bit {
+    base adj-sid-bit;
+    description
+      "Local/Global flag.";
+  }
+  
+  identity g-bit {
+    base adj-sid-bit;
+    description
+      "Group flag.";
+  }
+  
+  identity p-bit {
+    base adj-sid-bit;
+    description
+      "Persistent flag.";
+  }
+
+  typedef uint24 {
+    type uint32 {
+      range "0 .. 16777215";
+    }
+    description
+      "24-bit unsigned integer.";
+  }
+
+  /* Groupings */
+  grouping sid-sub-tlv {
+    description "SID/Label sub-TLV grouping.";
+    container sid-sub-tlv {
+      description
+        "Used to advertise the SID/Label associated with a
+         prefix or adjacency.";
+      leaf sid {
+        type uint32;
+        description
+          "Segment Identifier (SID) - A 20 bit label or
+           32 bit SID.";
+      }
+    }
+  }
+
+  grouping prefix-sid-sub-tlvs {
+    description "Prefix Segment ID (SID) sub-TLVs.";
+    container prefix-sid-sub-tlvs{
+      description "Prefix SID sub-TLV.";
+      list prefix-sid-sub-tlv {
+        description "Prefix SID sub-TLV.";
+        container prefix-sid-flags {
+          leaf-list bits {
+            type identityref {
+              base prefix-sid-bit;
+            }
+            description
+              "Prefix SID Sub-TLV flag bits list.";
+          }
+          description "Segment Identifier (SID) Flags.";
+        }
+        leaf mt-id {
+          type uint8;
+          description "Multi-topology ID.";
+        }
+        leaf algorithm {
+          type uint8;
+          description
+            "The algorithm associated with the prefix-SID.";
+        }
+        leaf sid {
+          type uint32;
+          description "An index or label.";
+        }
+      }
+    }
+  }
+
+  grouping extended-prefix-range-tlvs {
+    description "Extended prefix range TLV grouping.";
+
+    container extended-prefix-range-tlvs {
+      description "The list of range of prefixes.";
+      list extended-prefix-range-tlv {
+        description "The range of prefixes.";
+        leaf prefix-length {
+          type uint8;
+          description "Length of prefix in bits.";
+        }
+        leaf af {
+          type uint8;
+          description "Address family for the prefix.";
+        }
+        leaf range-size {
+          type uint16;
+          description "The number of prefixes covered by the
+                       advertisement.";
+        }
+        container extended-prefix-range-flags {
+          leaf-list bits {
+            type identityref {
+              base extended-prefix-range-bit;
+            }
+            description "Extended prefix range TLV flags list.";
+          }
+          description "Extended Prefix Range TLV flags.";
+        }
+        leaf prefix {
+          type inet:ip-prefix;
+          description "Address prefix.";
+        }
+        uses prefix-sid-sub-tlvs;
+        uses ospf:unknown-tlvs;
+      }
+    }
+  }
+
+  grouping sr-algorithm-tlv {
+    description "SR algorithm TLV grouping.";
+    container sr-algorithm-tlv {
+      description "All SR algorithm TLVs.";
+      leaf-list sr-algorithm {
+        type uint8;
+        description
+          "The Segment Routing (SR) algorithms that the router is
+           currently using.";
+      }
+    }
+  }
+
+  grouping sid-range-tlvs {
+    description "SID Range TLV grouping.";
+    container sid-range-tlvs {
+      description "List of SID range TLVs.";
+      list sid-range-tlv {
+        description "SID range TLV.";
+        leaf range-size {
+          type uint24;
+          description "The SID range.";
+        }
+        uses sid-sub-tlv;
+      }
+    }
+  }
+
+  grouping local-block-tlvs {
+    description "The SR local block TLV contains the
+                 range of labels reserved for local SIDs.";
+    container local-block-tlvs {
+      description "List of SRLB TLVs.";
+      list local-block-tlv {
+        description "SRLB TLV.";
+        leaf range-size {
+          type uint24;
+          description "The SID range.";
+        }
+        uses sid-sub-tlv;
+      }
+    }
+  }
+
+  grouping srms-preference-tlv {
+    description "The SRMS preference TLV is used to advertise
+                 a preference associated with the node that acts
+                 as an SR Mapping Server.";
+    container srms-preference-tlv {
+      description "SRMS Preference TLV.";
+      leaf preference {
+        type uint8 {
+          range "0 .. 255";
+        }
+        description "SRMS preference TLV, value from 0 to 255.";
+      }
+    }
+  }
+
+  /* Configuration */
   augment "/rt:routing/rt:control-plane-protocols"
-        + "/rt:control-plane-protocol" {
-    when "rt:type = 'ospf:ospfv2' or "
-       + "rt:type = 'ospf:ospfv3'" {
+        + "/rt:control-plane-protocol/ospf:ospf" {
+    when "../rt:type = 'ospf:ospfv2' or "
+       + "../rt:type = 'ospf:ospfv3'" {
       description
         "This augments the OSPF routing protocol when used.";
     }
     description
       "This augments the OSPF protocol configuration
        with segment routing.";
+    uses sr-mpls:sr-control-plane;
     container protocol-srgb {
       if-feature sr-mpls:protocol-srgb;
       uses sr-cmn:srgb;
@@ -153,292 +402,7 @@ module ietf-ospf-sr {
     }
   }
 
-  augment "/rt:routing/"
-        + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf" {
-    when "../rt:type = 'ospf:ospfv2' or "
-       + "../rt:type = 'ospf:ospfv3'" {
-      description
-        "This augments the OSPF routing protocol when used.";
-    }
-    description
-     "This augments the OSPF protocol operational state
-      with segment routing.";
-
-    container protocol-srgb {
-      if-feature sr-mpls:protocol-srgb;
-      uses sr-cmn:srgb;
-      description
-        "Per-protocol SRGB.";
-    }
-  }
-
-  augment "/rt:routing/"
-        + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:areas/ospf:area/"
-        + "ospf:interfaces/ospf:interface" {
-    when "../../../../../rt:type = 'ospf:ospfv2' or "
-       + "../../../../../rt:type = 'ospf:ospfv3'" {
-      description
-      "This augments the OSPF routing protocol when used.";
-    }
-    description
-     "This augments the OSPF protocol interface
-      operational state with segment routing.";
-
-    uses sr-mpls:igp-interface;
-  }
-
-  grouping sid-sub-tlv {
-    description "SID/Label sub-TLV grouping.";
-    container sid-sub-tlv {
-      description
-        "Used to advertise the SID/Label associated with a
-         prefix or adjacency.";
-      leaf sid {
-        type uint32;
-        description
-          "Segment Identifier (SID) - A 20 bit label or
-           32 bit SID.";
-      }
-    }
-  }
-
-  grouping prefix-sid-sub-tlvs {
-    description "Prefix Segment ID (SID) sub-TLVs.";
-    container perfix-sid-sub-tlvs{
-      description "Prefix SID sub-TLV.";
-      list prefix-sid-sub-tlv {
-        description "Prefix SID sub-TLV.";
-        leaf flags {
-          type bits {
-            bit NP {
-              description
-                "No-PHP flag.";
-            }
-            bit M {
-              description
-                "Mapping server flag.";
-            }
-            bit E {
-              description
-                "Explicit-NULL flag.";
-            }
-            bit V {
-              description
-                "Value/Index flag.";
-            }
-            bit L {
-              description
-                "Local flag.";
-            }
-          }
-          description "Segment Identifier (SID) Flags.";
-        }
-        leaf mt-id {
-          type uint8;
-          description "Multi-topology ID.";
-        }
-        leaf algorithm {
-          type uint8;
-          description
-            "The algorithm associated with the prefix-SID.";
-        }
-        leaf sid {
-          type uint32;
-          description "An index or label.";
-        }
-      }
-    }
-  }
-
-  grouping sid-binding-sub-tlvs {
-    description "SID/Label binding sub-TLV grouping.";
-    container sid-binding-sub-tlvs {
-      description "SID binding sub-TLVs.";
-      list sid-binding-sub-tlv {
-        description "SID binding sub-TLV.";
-        leaf flags {
-          type bits {
-            bit M {
-              description
-                "Mirroring context flag.";
-            }
-          }
-          description "Flags.";
-        }
-        leaf mt-id {
-          type uint8;
-          description "Multi-topology ID.";
-        }
-        leaf weight {
-          type uint8;
-          description "Weight for load-balancing purposes.";
-        }
-
-        uses sid-sub-tlv;
-
-        container ero-metric-sub-tlv {
-          description
-            "The cost of an Explicit Route Object (ERO) path.";
-          leaf metric {
-            type uint32;
-            description "The aggregate IGP or TE path cost.";
-          }
-        }
-
-        container ipv4-ero-sub-tlv {
-          description
-            "The IPv4 ERO sub-TLV describes a path segment
-             using IPv4 address.";
-          leaf flags {
-            type bits {
-              bit L {
-                description
-                  "If set, then the segment path is designated as
-                   'loose'. Otherwise, the path is 'strict'.";
-              }
-            }
-            description "ERO Flags.";
-          }
-          leaf ipv4-address {
-            type inet:ipv4-address;
-            description "The address of the explicit route hop.";
-          }
-        }
-        container unnumbered-ero-sub-tlv {
-          description "The unnumbered interface ID ERO sub-TLV
-                       describes a path segment that includes an
-                       unnumbered interface.";
-          leaf flags {
-            type bits {
-              bit L {
-                description
-                  "If set, then the segment path is designated as
-                   'loose'. Otherwise as 'strict'.";
-              }
-            }
-            description "ERO Flags.";
-          }
-          leaf router-id {
-            type yang:dotted-quad;
-            description "Router-id of the next-hop.";
-          }
-          leaf interface-id {
-            type uint32;
-            description
-              "The identifier assigned to the link by the
-               router specified by the router-id.";
-          }
-        }
-        container ipv4-backup-ero-sub-tlv {
-          description
-            "The IPv4 backup ERO sub-TLV describes a path
-             segment using IPv4 address.";
-          leaf flags {
-            type bits {
-              bit L {
-                description
-                  "If set, then the segment path is designated as
-                   'loose'. Otherwise as 'strict'.";
-              }
-            }
-            description "Flags.";
-          }
-          leaf ipv4-address {
-            type inet:ipv4-address;
-            description "The address of the explicit route hop.";
-          }
-        }
-        container unnumbered-backup-ero-sub-tlv {
-          description
-            "The unnumbered interface ID backup ERO sub-TLV
-             describes a path segment that includes an
-             unnumbered interface.";
-          leaf flags {
-            type bits {
-              bit L {
-                description
-                  "If set, then the segment path is designated as
-                   'loose'. Otherwise, the path is 'strict'.";
-              }
-            }
-            description "Flags.";
-          }
-          leaf router-id {
-            type yang:dotted-quad;
-            description "Router-id of the next-hop.";
-          }
-          leaf interface-id {
-            type uint32;
-            description
-              "The identifier assigned to the link by the
-              router specified by the router-id.";
-          }
-        }
-      }
-    }
-  }
-
-  grouping extended-prefix-range-tlvs {
-    description "Extended prefix range TLV grouping.";
-
-    container extended-prefix-range-tlvs {
-      description "The list of range of prefixes.";
-      list extended-prefix-range-tlv {    //type=2?
-        description "The range of prefixes.";
-        leaf range-size {
-          type uint16;
-          description "The number of prefixes covered by the
-                       advertisement.";
-        }
-        leaf flags {
-          type bits {
-            bit IA {
-              description
-                "Inter-Area flag.";
-            }
-          }
-          description "Flags.";
-        }
-        leaf prefix {
-          type inet:ip-prefix;
-          description "Address prefix.";
-        }
-        uses prefix-sid-sub-tlvs;
-        uses sid-binding-sub-tlvs;
-        uses ospf:unknown-tlvs;
-      }
-    }
-  }
-
-  grouping sr-algorithm-tlv {
-    description "SR algorithm TLV grouping.";
-    container sr-algorithm-tlv {
-      description "All SR algorithm TLVs.";
-      leaf-list sr-algorithm {
-        type uint8;
-        description
-          "The Segment Routing (SR) algorithms that the router is
-           currently using.";
-      }
-    }
-  }
-
-  grouping sid-range-tlvs {
-    description "SID Range TLV grouping.";
-    container sid-range-tlvs {
-      description "List of SID range TLVs.";
-      list sid-range-tlv {
-        description "SID range TLV.";
-        leaf range-size {
-          type rt-types:uint24;
-          description "The SID range.";
-        }
-        uses sid-sub-tlv;
-      }
-    }
-  }
+  /* Database */
   augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
         + "ospf:ospf/ospf:areas/ospf:area/"
@@ -446,8 +410,66 @@ module ietf-ospf-sr {
         + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
         + "ospf:link-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
-        + "ospf:extended-prefix-opaque/"
-        + "ospf:extended-prefix-tlv" {
+        + "ospf:extended-prefix-opaque" {
+    when "../../../../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv2'" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "SR specific TLVs for OSPFv2 extended prefix LSA
+       in type 9 opaque LSA.";
+
+    uses extended-prefix-range-tlvs;
+  }
+
+    augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:extended-prefix-opaque" {
+    when "../../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv2'" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "SR specific TLVs for OSPFv2 extended prefix LSA
+       in type 10 opaque LSA.";
+
+    uses extended-prefix-range-tlvs;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:database/"
+        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:extended-prefix-opaque" {
+    when "../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv2'" {
+      description
+        "This augmentation is only valid for OSPFv2.";
+    }
+    description
+      "SR specific TLVs for OSPFv2 extended prefix LSA
+       in type 11 opaque LSA.";
+
+    uses extended-prefix-range-tlvs;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/ospf:area/"
+        + "ospf:interfaces/ospf:interface/ospf:database/"
+        + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
+        + "ospf:link-scope-lsa/ospf:version/ospf:ospfv2/"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/"
+        + "ospf:extended-prefix-opaque/ospf:extended-prefix-tlv" {
     when "../../../../../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
@@ -457,7 +479,6 @@ module ietf-ospf-sr {
       "SR specific TLVs for OSPFv2 extended prefix TLV
        in type 9 opaque LSA.";
     uses prefix-sid-sub-tlvs;
-    uses sid-binding-sub-tlvs;
   }
 
   augment "/rt:routing/"
@@ -467,8 +488,7 @@ module ietf-ospf-sr {
         + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
         + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
-        + "ospf:extended-prefix-opaque/"
-        + "ospf:extended-prefix-tlv" {
+        + "ospf:extended-prefix-opaque/ospf:extended-prefix-tlv" {
     when "../../../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
@@ -478,7 +498,6 @@ module ietf-ospf-sr {
       "SR specific TLVs for OSPFv2 extended prefix TLV
        in type 10 opaque LSA.";
     uses prefix-sid-sub-tlvs;
-    uses sid-binding-sub-tlvs;
   }
 
   augment "/rt:routing/"
@@ -487,8 +506,7 @@ module ietf-ospf-sr {
         + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
         + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
-        + "ospf:extended-prefix-opaque/"
-        + "ospf:extended-prefix-tlv" {
+        + "ospf:extended-prefix-opaque/ospf:extended-prefix-tlv" {
     when "../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
@@ -498,7 +516,6 @@ module ietf-ospf-sr {
       "SR specific TLVs for OSPFv2 extended prefix TLV
        in type 11 opaque LSA.";
     uses prefix-sid-sub-tlvs;
-    uses sid-binding-sub-tlvs;
   }
 
   augment "/rt:routing/"
@@ -508,8 +525,7 @@ module ietf-ospf-sr {
         + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
         + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
-        + "ospf:extended-link-opaque/"
-        + "ospf:extended-link-tlv" {
+        + "ospf:extended-link-opaque/ospf:extended-link-tlv" {
     when "../../../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
@@ -523,26 +539,14 @@ module ietf-ospf-sr {
       description "Adjacency SID optional sub-TLVs.";
       list adj-sid-sub-tlv {
         description "List of Adjacency SID sub-TLVs.";
-        leaf flags {
-          type bits {
-            bit B {
-              description
-                "Backup flag.";
+        container adj-sid-flags {
+          leaf-list bits {
+            type identityref {
+              base adj-sid-bit;
             }
-            bit V {
-              description
-                "Value/Index flag.";
-            }
-            bit L {
-              description
-                "Local/Global flag.";
-            }
-            bit S {
-              description
-                "Set flag.";
-            }
+            description "Adj sid sub-tlv flags list.";
           }
-          description "Flags.";
+          description "Adj-sid sub-tlv flags.";
         }
         leaf mt-id {
           type uint8;
@@ -563,26 +567,14 @@ module ietf-ospf-sr {
       description "LAN Adjacency SID optional sub-TLVs.";
       list lan-adj-sid-sub-tlv {
         description "List of LAN adjacency SID sub-TLVs.";
-        leaf flags {
-          type bits {
-            bit B {
-              description
-                "Backup flag.";
+        container lan-adj-sid-flags {
+          leaf-list bits {
+            type identityref {
+              base adj-sid-bit;
             }
-            bit V {
-              description
-                "Value/Index flag.";
-            }
-            bit L {
-              description
-                "Local/Global flag.";
-            }
-            bit S {
-              description
-                "Set flag.";
-            }
+            description "LAN adj sid sub-tlv flags list.";
           }
-          description "Flags.";
+          description "LAN adj-sid sub-tlv flags.";
         }
         leaf mt-id {
           type uint8;
@@ -610,8 +602,8 @@ module ietf-ospf-sr {
         + "ospf:interfaces/ospf:interface/ospf:database/"
         + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
         + "ospf:link-scope-lsa/ospf:version/ospf:ospfv2/"
-        + "ospf:ospfv2/ospf:body/ospf:opaque" {
-    when "../../../../../../../../../../../../"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/ospf:ri-opaque" {
+    when "../../../../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
         "This augmentation is only valid for OSPFv2.";
@@ -620,9 +612,10 @@ module ietf-ospf-sr {
     description
       "SR specific TLVs for OSPFv2 type 9 opaque LSA.";
 
-    uses extended-prefix-range-tlvs;
     uses sr-algorithm-tlv;
     uses sid-range-tlvs;
+    uses local-block-tlvs;
+    uses srms-preference-tlv;
   }
 
   augment "/rt:routing/"
@@ -631,8 +624,8 @@ module ietf-ospf-sr {
         + "ospf:area/ospf:database/"
         + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
         + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
-        + "ospf:ospfv2/ospf:body/ospf:opaque" {
-    when "../../../../../../../../../../"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/ospf:ri-opaque" {
+    when "../../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
         "This augmentation is only valid for OSPFv2.";
@@ -641,9 +634,10 @@ module ietf-ospf-sr {
     description
       "SR specific TLVs for OSPFv2 type 10 opaque LSA.";
 
-    uses extended-prefix-range-tlvs;
     uses sr-algorithm-tlv;
     uses sid-range-tlvs;
+    uses local-block-tlvs;
+    uses srms-preference-tlv;
   }
 
   augment "/rt:routing/"
@@ -651,17 +645,18 @@ module ietf-ospf-sr {
         + "ospf:ospf/ospf:database/"
         + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
         + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
-        + "ospf:ospfv2/ospf:body/ospf:opaque" {
-    when "../../../../../../../../"
+        + "ospf:ospfv2/ospf:body/ospf:opaque/ospf:ri-opaque" {
+    when "../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
         "This augmentation is only valid for OSPFv2.";
     }
     description
       "SR specific TLVs for OSPFv2 type 11 opaque LSA.";
-
-    uses extended-prefix-range-tlvs;
+    
     uses sr-algorithm-tlv;
     uses sid-range-tlvs;
+    uses local-block-tlvs;
+    uses srms-preference-tlv;
   }
 }
