@@ -1,4 +1,5 @@
 module ietf-ospf-sr {
+  yang-version 1.1;  
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr";
 
   prefix ospf-sr;
@@ -14,44 +15,50 @@ module ietf-ospf-sr {
   import ietf-routing {
     prefix "rt";
   }
-  import ietf-segment-routing {
-    prefix "sr";
+  
+  import ietf-routing-types {
+    prefix "rt-types";
+    reference
+          "RFC 8294: Common YANG Data Types for the Routing Area.                                                                                                Section 3.";
   }
+  
+  import ietf-segment-routing-common {
+       prefix "sr-cmn";
+       reference
+         "RFC 9020: YANG Data Model for Segment Routing";
+  }
+  
+  import ietf-segment-routing-mpls {
+       prefix "sr-mpls";
+       reference
+         "RFC 9020: YANG Data Model for Segment Routing";
+  }
+  
   import ietf-ospf {
     prefix "ospf";
   }
 
+  
   organization
-    "Cisco Systems
-     170 West Tasman Drive
-     San Jose, CA 95134-1706
-     USA";
+      "IETF Link State Routing (lsr) Working Group";
 
   contact
-     "WG Web:   <http://tools.ietf.org/wg/ospf/>
-      WG List:  <mailto:ospf@ietf.org>
+      "WG Web:   <https://datatracker.ietf.org/wg/lsr/>
+       WG List:  <mailto:lsr@ietf.org>
 
-      WG Chair: Acee Lindem
-                <mailto:acee@cisco.com>
-
-      WG Chair: Abhay Roy
-                <mailto:akr@cisco.com>
-
-      Editor:   Derek Yeung
-                <mailto:myeung@cisco.com>
-      Author:   Derek Yeung
-                <mailto:myeung@cisco.com>
+      Editor:   Acee Lindem
+                <mailto:acee.ietf@gmail.com>
       Author:   Yingzhen Qu
-                <mailto:yiqu@cisco.com>
-      Author:   Acee Lindem
-                <mailto:acee@cisco.com>
+                <mailto:yingzhen.qu@futurwei.com>
+      Author:   Derek Yeung
+                <mailto:derek@arrcus.com>
       Author:   Jeffrey Zhang
                 <mailto:zzhang@juniper.net>
       Author:   Ing-Wher Chen
-                <mailto:ing-wher.chen@ericsson.com>
+                <mailto:ingwherchen@mitre.org>
       Author:   Greg Hankins
                 <mailto:greg.hankins@alcatel-lucent.com>";
-
+  
   description
     "This YANG module defines the generic configuration
      and operational state for OSPF Segment Routing, which is
@@ -60,48 +67,21 @@ module ietf-ospf-sr {
      define vendor-specific OSPF Segment Routing configuration
      and operational parameters and policies.
 
-     Terms and Acronyms
+     Copyright (c) 2023 IETF Trust and the persons identified as
+     authors of the code.  All rights reserved.
 
-     OSPF (ospf): Open Shortest Path First
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Revised BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents (https://trustee.ietf.org/license-info).
 
-     IP (ip): Internet Protocol
-
-     IPv4 (ipv4):Internet Protocol Version 4
-
-     IPv6 (ipv6): Internet Protocol Version 6
+     This version of this YANG module is part of RFC XXXX
+     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC itself
+     for full legal notices.
     ";
 
-  revision 2016-07-07 {
-    description
-      "* Change routing-protocol to control-plane-protocol.";
-    reference
-      "RFC XXXX: A YANG Data Model for OSPF Segment Routing.";
-  }
- 
-  revision 2016-03-20 {
-    description
-      "* Remove routing-instance.";
-    reference
-      "RFC XXXX: A YANG Data Model for OSPF Segment Routing.";
-  }
-
-  revision 2015-10-19 {
-    description
-      "* Add per-protocol SRGB support.
-       * Editorial changes.";
-    reference
-      "RFC XXXX: A YANG Data Model for OSPF Segment Routing.";
-  }
-
-  revision 2015-09-02 {
-    description
-      "* Author list update.
-       * Editorial changes.";
-    reference
-      "RFC XXXX: A YANG Data Model for OSPF Segment Routing.";
-  }
-
-  revision 2015-07-06 {
+  revision 2023-02-23 {
     description
       "Initial revision.";
     reference
@@ -114,32 +94,29 @@ module ietf-ospf-sr {
        computation using segment routing.";
   }
 
-  /* Configuration */
-
   augment "/rt:routing/rt:control-plane-protocols"
-        + "/rt:control-plane-protocol/ospf:ospf/ospf:instance" {
-    when "../../rt:type = 'ospf:ospfv2' or "
-       + "../../rt:type = 'ospf:ospfv3'" {
+        + "/rt:control-plane-protocol" {
+    when "rt:type = 'ospf:ospfv2' or "
+       + "rt:type = 'ospf:ospfv3'" {
       description
         "This augments the OSPF routing protocol when used.";
     }
     description
       "This augments the OSPF protocol configuration
        with segment routing.";
-    uses sr:controlplane-cfg;
     container protocol-srgb {
-      if-feature sr:protocol-srgb;
-      uses sr:srgb-cfg;
+      if-feature sr-mpls:protocol-srgb;
+      uses sr-cmn:srgb;
       description
         "Per-protocol SRGB.";
     }
   }
 
   augment "/rt:routing/rt:control-plane-protocols/"
-        + "rt:control-plane-protocol/ospf:ospf/ospf:instance/"
+        + "rt:control-plane-protocol/ospf:ospf/"
         + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface" {
-    when "../../../../../../rt:type = 'ospf:ospfv2' or "
-       + "../../../../../../rt:type = 'ospf:ospfv3'" {
+    when "../../../../../rt:type = 'ospf:ospfv2' or "
+       + "../../../../../rt:type = 'ospf:ospfv3'" {
       description
         "This augments the OSPF interface configuration
          when used.";
@@ -148,15 +125,15 @@ module ietf-ospf-sr {
       "This augments the OSPF protocol interface
        configuration with segment routing.";
 
-    uses sr:igp-interface-cfg;
+    uses sr-mpls:igp-interface;
   }
 
   augment "/rt:routing/rt:control-plane-protocols/"
-        + "rt:control-plane-protocol/ospf:ospf/ospf:instance/"
+        + "rt:control-plane-protocol/ospf:ospf/"
         + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface/"
         + "ospf:fast-reroute" {
-    when "../../../../../../../rt:type = 'ospf:ospfv2' or "
-       + "../../../../../../../rt:type = 'ospf:ospfv3'" {
+    when "../../../../../../rt:type = 'ospf:ospfv2' or "
+       + "../../../../../../rt:type = 'ospf:ospfv3'" {
       description
         "This augments the OSPF routing protocol when used.";
     }
@@ -176,13 +153,11 @@ module ietf-ospf-sr {
     }
   }
 
-  /* Operational states */
-
-  augment "/rt:routing-state/"
+  augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:instance" {
-    when "../../rt:type = 'ospf:ospfv2' or "
-       + "../../rt:type = 'ospf:ospfv3'" {
+        + "ospf:ospf" {
+    when "../rt:type = 'ospf:ospfv2' or "
+       + "../rt:type = 'ospf:ospfv3'" {
       description
         "This augments the OSPF routing protocol when used.";
     }
@@ -190,21 +165,20 @@ module ietf-ospf-sr {
      "This augments the OSPF protocol operational state
       with segment routing.";
 
-    uses sr:controlplane-cfg;
     container protocol-srgb {
-      if-feature sr:protocol-srgb;
-      uses sr:srgb-cfg;
+      if-feature sr-mpls:protocol-srgb;
+      uses sr-cmn:srgb;
       description
         "Per-protocol SRGB.";
     }
   }
 
-  augment "/rt:routing-state/"
+  augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:instance/ospf:areas/ospf:area/"
+        + "ospf:ospf/ospf:areas/ospf:area/"
         + "ospf:interfaces/ospf:interface" {
-    when "../../../../../../rt:type = 'ospf:ospfv2' or "
-       + "../../../../../../rt:type = 'ospf:ospfv3'" {
+    when "../../../../../rt:type = 'ospf:ospfv2' or "
+       + "../../../../../rt:type = 'ospf:ospfv3'" {
       description
       "This augments the OSPF routing protocol when used.";
     }
@@ -212,10 +186,8 @@ module ietf-ospf-sr {
      "This augments the OSPF protocol interface
       operational state with segment routing.";
 
-    uses sr:igp-interface-cfg;
+    uses sr-mpls:igp-interface;
   }
-
-  /* Database */
 
   grouping sid-sub-tlv {
     description "SID/Label sub-TLV grouping.";
@@ -460,22 +432,23 @@ module ietf-ospf-sr {
       list sid-range-tlv {
         description "SID range TLV.";
         leaf range-size {
-          type ospf:uint24;
+          type rt-types:uint24;
           description "The SID range.";
         }
         uses sid-sub-tlv;
       }
     }
   }
-  augment "/rt:routing-state/"
+  augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:instance/ospf:areas/ospf:area/"
+        + "ospf:ospf/ospf:areas/ospf:area/"
         + "ospf:interfaces/ospf:interface/ospf:database/"
         + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
         + "ospf:link-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
-        + "ospf:extended-prefix-tlvs/ospf:extended-prefix-tlv" {
-    when "../../../../../../../../../../../../../../../../../"
+        + "ospf:extended-prefix-opaque/"
+        + "ospf:extended-prefix-tlv" {
+    when "../../../../../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
         "This augmentation is only valid for OSPFv2.";
@@ -487,15 +460,16 @@ module ietf-ospf-sr {
     uses sid-binding-sub-tlvs;
   }
 
-  augment "/rt:routing-state/"
+  augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:instance/ospf:areas/"
+        + "ospf:ospf/ospf:areas/"
         + "ospf:area/ospf:database/"
         + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
         + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
-        + "ospf:extended-prefix-tlvs/ospf:extended-prefix-tlv" {
-    when "../../../../../../../../../../../../../../../"
+        + "ospf:extended-prefix-opaque/"
+        + "ospf:extended-prefix-tlv" {
+    when "../../../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
         "This augmentation is only valid for OSPFv2.";
@@ -507,14 +481,15 @@ module ietf-ospf-sr {
     uses sid-binding-sub-tlvs;
   }
 
-  augment "/rt:routing-state/"
+  augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:instance/ospf:database/"
+        + "ospf:ospf/ospf:database/"
         + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
         + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
-        + "ospf:extended-prefix-tlvs/ospf:extended-prefix-tlv" {
-    when "../../../../../../../../../../../../../"
+        + "ospf:extended-prefix-opaque/"
+        + "ospf:extended-prefix-tlv" {
+    when "../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
         "This augmentation is only valid for OSPFv2.";
@@ -526,15 +501,16 @@ module ietf-ospf-sr {
     uses sid-binding-sub-tlvs;
   }
 
-  augment "/rt:routing-state/"
+  augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:instance/ospf:areas/"
+        + "ospf:ospf/ospf:areas/"
         + "ospf:area/ospf:database/"
         + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
         + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque/"
-        + "ospf:extended-link-tlvs/ospf:extended-link-tlv" {
-    when "../../../../../../../../../../../../../../../"
+        + "ospf:extended-link-opaque/"
+        + "ospf:extended-link-tlv" {
+    when "../../../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
         "This augmentation is only valid for OSPFv2.";
@@ -628,14 +604,14 @@ module ietf-ospf-sr {
     }
   }
 
-  augment "/rt:routing-state/"
+  augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:instance/ospf:areas/ospf:area/"
+        + "ospf:ospf/ospf:areas/ospf:area/"
         + "ospf:interfaces/ospf:interface/ospf:database/"
         + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
         + "ospf:link-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque" {
-    when "../../../../../../../../../../../../../../../"
+    when "../../../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
         "This augmentation is only valid for OSPFv2.";
@@ -649,14 +625,14 @@ module ietf-ospf-sr {
     uses sid-range-tlvs;
   }
 
-  augment "/rt:routing-state/"
+  augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:instance/ospf:areas/"
+        + "ospf:ospf/ospf:areas/"
         + "ospf:area/ospf:database/"
         + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
         + "ospf:area-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque" {
-    when "../../../../../../../../../../../../../"
+    when "../../../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
         "This augmentation is only valid for OSPFv2.";
@@ -670,13 +646,13 @@ module ietf-ospf-sr {
     uses sid-range-tlvs;
   }
 
-  augment "/rt:routing-state/"
+  augment "/rt:routing/"
         + "rt:control-plane-protocols/rt:control-plane-protocol/"
-        + "ospf:ospf/ospf:instance/ospf:database/"
+        + "ospf:ospf/ospf:database/"
         + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
         + "ospf:as-scope-lsa/ospf:version/ospf:ospfv2/"
         + "ospf:ospfv2/ospf:body/ospf:opaque" {
-    when "../../../../../../../../../../../"
+    when "../../../../../../../../"
        + "rt:type = 'ospf:ospfv2'" {
       description
         "This augmentation is only valid for OSPFv2.";
