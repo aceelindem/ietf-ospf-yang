@@ -14,6 +14,11 @@ module ietf-ospf-sr {
     reference "RFC 6991 - Common YANG Data Types";
   }
 
+  import ietf-routing-types {
+    prefix "rt-types";
+    reference "RFC 8249 - Common YANG Data Types for the Routing Area";
+  }
+
   import ietf-routing {
     prefix "rt";
     reference "RFC 8349 - A YANG Data Model for Routing
@@ -97,10 +102,20 @@ module ietf-ospf-sr {
       "RFC XXXX: A YANG Data Model for OSPF Segment Routing.";
   }
 
+  feature remote-lfa-sr {
+    description
+      "Enhance rLFA to use SR path.";
+    reference
+      "RFC 8102: Remote-LFA Node Protection and Manageability";
+  }
+
   feature ti-lfa {
     description
       "Topology-Independent Loop-Free Alternate (TI-LFA)
        computation using segment routing.";
+    reference
+      "draft-ietf-rtgwg-segment-routing-ti-lfa -
+       Topology Independent Fast Reroute using Segment Routing";
   }
 
   identity prefix-sid-bit {
@@ -185,17 +200,12 @@ module ietf-ospf-sr {
       "Persistent flag.";
   }
 
-  typedef uint24 {
-    type uint32 {
-      range "0 .. 16777215";
-    }
-    description
-      "24-bit unsigned integer.";
-  }
-
   /* Groupings */
   grouping sid-sub-tlv {
     description "SID/Label sub-TLV grouping.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing
+       (Section 6)";
     container sid-sub-tlv {
       description
         "Used to advertise the SID/Label associated with a
@@ -211,6 +221,9 @@ module ietf-ospf-sr {
 
   grouping prefix-sid-sub-tlvs {
     description "Prefix Segment ID (SID) sub-TLVs.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing
+        (Section 6)";
     container prefix-sid-sub-tlvs{
       description "Prefix SID sub-TLV.";
       list prefix-sid-sub-tlv {
@@ -230,7 +243,9 @@ module ietf-ospf-sr {
           description "Multi-topology ID.";
         }
         leaf algorithm {
-          type uint8;
+          type identityref {
+            base sr-cmn:prefix-sid-algorithm;
+          }
           description
             "The algorithm associated with the prefix-SID.";
         }
@@ -244,7 +259,9 @@ module ietf-ospf-sr {
 
   grouping extended-prefix-range-tlvs {
     description "Extended prefix range TLV grouping.";
-
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing
+       (Section 4)";
     container extended-prefix-range-tlvs {
       description "The list of range of prefixes.";
       list extended-prefix-range-tlv {
@@ -283,11 +300,16 @@ module ietf-ospf-sr {
 
   grouping sr-algorithm-tlv {
     description "SR algorithm TLV grouping.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing
+       (Section 3.1)";
     container sr-algorithm-tlv {
       description "All SR algorithm TLVs.";
       leaf-list sr-algorithm {
-        type uint8;
-        description
+        type identityref {
+          base sr-cmn:prefix-sid-algorithm;
+        }
+       description
           "The Segment Routing (SR) algorithms that the router is
            currently using.";
       }
@@ -296,12 +318,15 @@ module ietf-ospf-sr {
 
   grouping sid-range-tlvs {
     description "SID Range TLV grouping.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing
+       (Section 3.2)";
     container sid-range-tlvs {
       description "List of SID range TLVs.";
       list sid-range-tlv {
         description "SID range TLV.";
         leaf range-size {
-          type uint24;
+          type rt-types:uint24;
           description "The SID range.";
         }
         uses sid-sub-tlv;
@@ -312,12 +337,15 @@ module ietf-ospf-sr {
   grouping local-block-tlvs {
     description "The SR local block TLV contains the
                  range of labels reserved for local SIDs.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing
+       (Section 3.3)";
     container local-block-tlvs {
       description "List of SRLB TLVs.";
       list local-block-tlv {
         description "SRLB TLV.";
         leaf range-size {
-          type uint24;
+          type rt-types:uint24;
           description "The SID range.";
         }
         uses sid-sub-tlv;
@@ -329,12 +357,13 @@ module ietf-ospf-sr {
     description "The SRMS preference TLV is used to advertise
                  a preference associated with the node that acts
                  as an SR Mapping Server.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing
+       (Section 3.4)";
     container srms-preference-tlv {
       description "SRMS Preference TLV.";
       leaf preference {
-        type uint8 {
-          range "0 .. 255";
-        }
+        type uint8;
         description "SRMS preference TLV, value from 0 to 255.";
       }
     }
@@ -400,6 +429,28 @@ module ietf-ospf-sr {
          (TI-LFA) support.";
     }
   }
+
+  augment "/rt:routing/rt:control-plane-protocols/"
+        + "rt:control-plane-protocol/ospf:ospf/"
+        + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface/"
+        + "ospf:fast-reroute/ospf:lfa/ospf:remote-lfa" {
+    when "../../../../../../../../rt:type = 'ospf:ospfv2' or "
+       + "../../../../../../../../rt:type = 'ospf:ospfv3'" {
+      description
+        "This augments the OSPF routing protocol when used.";
+    }
+    description
+     "This augments the OSPF protocol IP-FRR with remote LFA.";
+    leaf use-segment-routing-path {
+      if-feature "remote-lfa-sr";
+      type boolean;
+      default false;
+      description
+        "Force remote LFA to use segment routing path instead of LDP
+         path. The value of this leaf is in effect only when
+         remote-lfa is enabled.";
+      }
+  }	  
 
   /* Database */
   augment "/rt:routing/"
