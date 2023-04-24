@@ -128,7 +128,8 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
     <t>
       This document defines a YANG data model that can be used to configure
       and manage OSPFv2 extensions for Segment Routing <xref target="RFC8665" format="default"/>
-      and it is an augmentation to the OSPF YANG data model.
+      and OSPFv3 extensions for Segment Routing <xref target="RFC8666" format="default"/>.
+      It is an augmentation to the OSPF YANG data model.
     </t>
     <t>
       The YANG module in this document conforms to the Network Management
@@ -1137,7 +1138,7 @@ module ietf-ospf-sr {
       <name>Acknowledgements</name>
       <t>The authors wish to thank Yi Yang, Alexander Clemm,
       Gaurav Gupta, Ladislav Lhotka, Stephane Litkowski,
-      Greg Hankins, Manish Gupta and Alan Davey for their thorough reviews
+      Greg Hankins, Manish Gupta, Alan Davey, and Divakaran Baskaran for their thorough reviews
       and helpful comments.</t>
       <t>This document was produced using Marshall Rose's xml2rfc tool.</t>
       <t>Author affiliation with The MITRE Corporation is provided for
