@@ -24,20 +24,27 @@ module ietf-ospf-sr {
     reference "RFC 8349 - A YANG Data Model for Routing
                Management (NMDA Version)";
   }
+
   import ietf-segment-routing-common {
     prefix "sr-cmn";
     reference "RFC 9020 - YANG Data Model for Segment
                Routing";
   }
+
   import ietf-segment-routing-mpls {
     prefix "sr-mpls";
     reference "RFC 9020 - YANG Data Model for Segment
                Routing";
   }
+
   import ietf-ospf {
     prefix "ospf";
     reference "RFC 9129 - YANG Data Model for the OSPF
                Protocol";
+  }
+
+  import ietf-ospfv3-extended-lsa {
+    prefix "ospfv3-e-lsa";
   }
 
   organization
@@ -121,6 +128,9 @@ module ietf-ospf-sr {
   identity prefix-sid-bit {
     description
       "Base identity for prefix sid sub-tlv bits.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing
+       RFC 8666: OSPFv3 Extensions for Segment Routing";
   }
 
   identity np-bit {
@@ -163,11 +173,16 @@ module ietf-ospf-sr {
     description
       "Inter-Area flag. If set, advertisement is of
        inter-area type.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing";
   }
 
   identity adj-sid-bit {
     description
       "Base identity for adj sid sub-tlv bits.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing
+       RFC 8666: OSPFv3 Extensions for Segment Routing";
   }
 
   identity  b-bit {
@@ -219,7 +234,7 @@ module ietf-ospf-sr {
     }
   }
 
-  grouping prefix-sid-sub-tlvs {
+  grouping ospfv2-prefix-sid-sub-tlvs {
     description "Prefix Segment ID (SID) sub-TLVs.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing
@@ -257,7 +272,7 @@ module ietf-ospf-sr {
     }
   }
 
-  grouping extended-prefix-range-tlvs {
+  grouping ospfv2-extended-prefix-range-tlvs {
     description "Extended prefix range TLV grouping.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing
@@ -292,7 +307,7 @@ module ietf-ospf-sr {
           type inet:ip-prefix;
           description "Address prefix.";
         }
-        uses prefix-sid-sub-tlvs;
+        uses ospfv2-prefix-sid-sub-tlvs;
         uses ospf:unknown-tlvs;
       }
     }
@@ -369,6 +384,134 @@ module ietf-ospf-sr {
     }
   }
 
+  grouping ospfv3-prefix-sid-sub-tlvs {
+    description "Prefix Segment ID (SID) sub-TLVs.";
+    reference
+      "RFC 8666: OSPFv3 Extensions for Segment Routing
+       (Section 6)";
+    container perfix-sid-sub-tlvs{
+      description "Prefix SID sub-TLV.";
+      list prefix-sid-sub-tlv {
+        description "Prefix SID sub-TLV.";
+        container ospfv3-prefix-sid-flags {
+          leaf-list bits {
+            type identityref {
+              base ospf-sr:prefix-sid-bit;
+            }
+            description
+              "Prefix SID Sub-TLV flag bits list.";
+          }
+          description "Segment Identifier (SID) Flags.";
+        }
+        leaf algorithm {
+          type uint8;
+          description
+            "The algorithm associated with the prefix-SID.";
+        }
+        leaf sid {
+          type uint32;
+          description "An index or label.";
+        }
+      }
+    }
+  }
+
+  grouping ospfv3-extended-prefix-range-tlvs {
+    description "Extended prefix range TLV grouping.";
+    reference
+      "RFC 8666: OSPFv3 Extensions for Segment Routing
+       (Section 5)";
+    container ospfv3-extended-prefix-range-tlvs {
+      description "The list of extended prefix range TLVs.";
+      list extended-prefix-range-tlv {
+        description "The range of prefixes.";
+        leaf prefix-length {
+          type uint8;
+          description "Length of prefix in bits.";
+        }
+        leaf af {
+          type uint8;
+          description "Address family for the prefix.";
+        }
+        leaf range-size {
+          type uint16;
+          description "The number of prefixes covered by the
+                       advertisement.";
+        }
+        leaf prefix {
+          type inet:ip-prefix;
+          description "Address prefix.";
+        }
+        uses ospfv3-prefix-sid-sub-tlvs;
+        uses ospf:unknown-tlvs;
+      }
+    }
+  }
+
+  grouping ospfv3-adj-sid-sub-tlvs {
+    description "Adjacency SID sub TLV grouping.";
+    reference
+      "RFC 8666: OSPFv3 Extensions for Segment Routing
+       (Section 7)";
+    container adj-sid-sub-tlvs {
+      description "Adjacency SID optional sub-TLVs.";
+      list adj-sid-sub-tlv {
+        description "List of Adjacency SID sub-TLVs.";
+        container adj-sid-flags {
+          leaf-list bits {
+            type identityref {
+              base adj-sid-bit;
+            }
+            description "Adj sid sub-tlv flags list.";
+          }
+          description "Adj-sid sub-tlv flags.";
+        }
+        leaf weight {
+          type uint8;
+          description "Weight used for load-balancing.";
+        }
+        leaf sid {
+          type uint32;
+          description "Segment Identifier (SID) index/label.";
+        }
+      }
+    }
+  }
+
+  grouping ospfv3-lan-adj-sid-sub-tlvs {
+    description "LAN adj-sid sub TLV grouping.";
+    reference
+      "RFC 8666: OSPFv3 Extensions for Segment Routing
+       (Section 7)";
+    container lan-adj-sid-sub-tlvs {
+      description "LAN Adjacency SID optional sub-TLVs.";
+      list lan-adj-sid-sub-tlv {
+        description "List of LAN adjacency SID sub-TLVs.";
+        container lan-adj-sid-flags {
+          leaf-list bits {
+            type identityref {
+              base adj-sid-bit;
+            }
+            description "LAN adj sid sub-tlv flags list.";
+          }
+          description "LAN adj-sid sub-tlv flags.";
+        }
+        leaf weight {
+          type uint8;
+          description "Weight used for load-balancing.";
+        }
+        leaf neighbor-router-id {
+          type yang:dotted-quad;
+          description "Neighbor router ID.";
+        }
+        leaf sid {
+          type uint32;
+          description "Segment Identifier (SID) index/label.";
+        }
+      }
+    }
+  }
+
   /* Configuration */
   augment "/rt:routing/rt:control-plane-protocols"
         + "/rt:control-plane-protocol/ospf:ospf" {
@@ -424,6 +567,20 @@ module ietf-ospf-sr {
         description
          "Enables TI-LFA computation.";
       }
+      container tie-breaker {
+        leaf node-protection {
+          type uint8;
+          description
+            "Enable node protection.";
+        }
+        leaf srlg-disjoint {
+          type uint8;
+          description
+            "Enable SRLG protection.";
+        }
+        description
+          "Tie-breaker with priorities.";
+      }
       description
         "Topology Independent Loop Free Alternate
          (TI-LFA) support.";
@@ -470,7 +627,7 @@ module ietf-ospf-sr {
       "SR specific TLVs for OSPFv2 extended prefix LSA
        in type 9 opaque LSA.";
 
-    uses extended-prefix-range-tlvs;
+    uses ospfv2-extended-prefix-range-tlvs;
   }
 
     augment "/rt:routing/"
@@ -490,7 +647,7 @@ module ietf-ospf-sr {
       "SR specific TLVs for OSPFv2 extended prefix LSA
        in type 10 opaque LSA.";
 
-    uses extended-prefix-range-tlvs;
+    uses ospfv2-extended-prefix-range-tlvs;
   }
 
   augment "/rt:routing/"
@@ -509,7 +666,7 @@ module ietf-ospf-sr {
       "SR specific TLVs for OSPFv2 extended prefix LSA
        in type 11 opaque LSA.";
 
-    uses extended-prefix-range-tlvs;
+    uses ospfv2-extended-prefix-range-tlvs;
   }
 
   augment "/rt:routing/"
@@ -528,7 +685,7 @@ module ietf-ospf-sr {
     description
       "SR specific TLVs for OSPFv2 extended prefix TLV
        in type 9 opaque LSA.";
-    uses prefix-sid-sub-tlvs;
+    uses ospfv2-prefix-sid-sub-tlvs;
   }
 
   augment "/rt:routing/"
@@ -547,7 +704,7 @@ module ietf-ospf-sr {
     description
       "SR specific TLVs for OSPFv2 extended prefix TLV
        in type 10 opaque LSA.";
-    uses prefix-sid-sub-tlvs;
+    uses ospfv2-prefix-sid-sub-tlvs;
   }
 
   augment "/rt:routing/"
@@ -565,7 +722,7 @@ module ietf-ospf-sr {
     description
       "SR specific TLVs for OSPFv2 extended prefix TLV
        in type 11 opaque LSA.";
-    uses prefix-sid-sub-tlvs;
+    uses ospfv2-prefix-sid-sub-tlvs;
   }
 
   augment "/rt:routing/"
@@ -708,5 +865,254 @@ module ietf-ospf-sr {
     uses sid-range-tlvs;
     uses local-block-tlvs;
     uses srms-preference-tlv;
+  }
+
+  /* Segment Routing Capabilities */
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:database/"
+        + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+        + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospf:router-information" {
+    when "../../../../../../../../"
+       + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    description
+      "SR specific TLVs for OSPFv3 Router Information
+       opaque LSA.";
+    uses sr-algorithm-tlv;
+    uses sid-range-tlvs;
+    uses local-block-tlvs;
+    uses srms-preference-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/"
+        + "ospf:area/ospf:database/"
+        + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+        + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospf:router-information" {
+    when "../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+
+    description
+      "SR specific TLVs for OSPFv3 Router Information LSA.";
+
+    uses sr-algorithm-tlv;
+    uses sid-range-tlvs;
+    uses local-block-tlvs;
+    uses srms-preference-tlv;
+  }
+
+  augment "/rt:routing/"
+        + "rt:control-plane-protocols/rt:control-plane-protocol/"
+        + "ospf:ospf/ospf:areas/ospf:area/"
+        + "ospf:interfaces/ospf:interface/ospf:database/"
+        + "ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
+        + "ospf:link-scope-lsa/ospf:version/ospf:ospfv3/"
+        + "ospf:ospfv3/ospf:body/ospf:router-information" {
+    when "../../../../../../../../../../../../"
+       + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+
+    description
+      "SR specific TLVs for OSPFv3 Router Information LSA.";
+
+    uses sr-algorithm-tlv;
+    uses sid-range-tlvs;
+    uses local-block-tlvs;
+    uses srms-preference-tlv;
+  }
+
+  /* OSPFv3 Extended Prefix Range TLV */
+  augment "/rt:routing/"
+    + "rt:control-plane-protocols/rt:control-plane-protocol/"
+    + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+    + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+    + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-intra-area-prefix" {
+    when "../../../../../../../../../../"
+      + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3
+         E-Router LSAs";
+    }
+    uses ospfv3-extended-prefix-range-tlvs;
+    description
+      "OSPFv3 Area-Scoped E-Intra-Area-Prefix LSA.";
+  }
+
+  augment "/rt:routing/"
+    + "rt:control-plane-protocols/rt:control-plane-protocol/"
+    + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+    + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+    + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-inter-area-prefix" {
+    when "../../../../../../../../../../"
+      + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3
+         E-Router LSAs";
+    }
+    uses ospfv3-extended-prefix-range-tlvs;
+    description
+      "OSPFv3 Area-Scoped E-Inter-Area-Prefix LSA.";
+  }
+
+  augment "/rt:routing/"
+    + "rt:control-plane-protocols/rt:control-plane-protocol/"
+    + "ospf:ospf/ospf:database/"
+    + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+    + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-as-external" {
+    when "'ospf:../../../../../../../../../"
+      + "rt:type' = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    uses ospfv3-extended-prefix-range-tlvs;
+    description
+      "OSPFv3 AS-Scoped E-AS-External LSA.";
+  }
+
+  augment "/rt:routing/"
+    + "rt:control-plane-protocols/rt:control-plane-protocol/"
+    + "ospf:ospf/ospf:database/"
+    + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+    + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-nssa" {
+    when "'ospf:../../../../../../../../../"
+      + "rt:type' = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    uses ospfv3-extended-prefix-range-tlvs;
+    description
+      "OSPFv3 AS-Scoped E-NSSA LSA.";
+  }
+
+  /* Prefix SID Sub-TLV in Intra-Area Prefix TLV */
+  augment "/rt:routing/"
+    + "rt:control-plane-protocols/rt:control-plane-protocol/"
+    + "ospf:ospf/ospf:areas/ospf:area/ospf:interfaces/"
+    + "ospf:interface/"
+    + "ospf:database/ospf:link-scope-lsa-type/ospf:link-scope-lsas/"
+    + "ospf:link-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3/"
+    + "ospf:body/ospfv3-e-lsa:e-link/"
+    + "ospfv3-e-lsa:e-link-tlvs/ospfv3-e-lsa:intra-prefix-tlv" {
+    when "../../../../../../../../../../../../../../"
+      + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3
+         E-Router LSAs";
+    }
+    uses ospfv3-prefix-sid-sub-tlvs;
+    description
+      "OSPFv3 Link-Scoped Intra-Area Prefix TLV.";
+  }
+
+  augment "/rt:routing/"
+    + "rt:control-plane-protocols/rt:control-plane-protocol/"
+    + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+    + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+    + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-intra-area-prefix/"
+    + "ospfv3-e-lsa:e-intra-prefix-tlvs/"
+    +  "ospfv3-e-lsa:intra-prefix-tlv" {
+    when "../../../../../../../../../../../../"
+      + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3
+         E-Router LSAs";
+    }
+    uses ospfv3-prefix-sid-sub-tlvs;
+    description
+      "OSPFv3 Area-Scoped Intra-Area Prefix TLV.";
+  }
+
+
+  /* Prefix SID Sub-TLV in Inter-Area Prefix TLV */
+  augment "/rt:routing/"
+    + "rt:control-plane-protocols/rt:control-plane-protocol/"
+    + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+    + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+    + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-inter-area-prefix/"
+    + "ospfv3-e-lsa:e-inter-prefix-tlvs/"
+    + "ospfv3-e-lsa:inter-prefix-tlv" {
+    when "../../../../../../../../../../../../"
+      + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3
+         E-Router LSAs";
+    }
+    uses ospfv3-prefix-sid-sub-tlvs;
+    description
+      "OSPFv3 Area-Scoped Inter-Area Prefix TLV.";
+  }
+
+  /* Prefix SID Sub-TLV in External Prefix TLV */
+  augment "/rt:routing/"
+    + "rt:control-plane-protocols/rt:control-plane-protocol/"
+    + "ospf:ospf/ospf:database/"
+    + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+    + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-as-external/"
+    + "ospfv3-e-lsa:e-external-tlvs/"
+    + "ospfv3-e-lsa:external-prefix-tlv" {
+    when "'ospf:../../../../../../../../../"
+      + "rt:type' = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    uses ospfv3-prefix-sid-sub-tlvs;
+    description
+      "OSPFv3 AS-Scoped External Prefix TLV.";
+  }
+
+  augment "/rt:routing/"
+    + "rt:control-plane-protocols/rt:control-plane-protocol/"
+    + "ospf:ospf/ospf:database/"
+    + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
+    + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-nssa/"
+    + "ospfv3-e-lsa:e-external-tlvs/"
+    + "ospfv3-e-lsa:external-prefix-tlv" {
+    when "'ospf:../../../../../../../../../"
+      + "rt:type' = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3.";
+    }
+    uses ospfv3-prefix-sid-sub-tlvs;
+    description
+      "OSPFv3 AS-Scoped External Prefix TLV.";
+  }
+
+  /* Adj-SID sub-TLV */
+  augment "/rt:routing/"
+    + "rt:control-plane-protocols/rt:control-plane-protocol/"
+    + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+    + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+    + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router/"
+    + "ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv" {
+    when "../../../../../../../../../../../../"
+      + "rt:type = 'ospf:ospfv3'" {
+      description
+        "This augmentation is only valid for OSPFv3
+         E-Router LSAs";
+    }
+    uses ospfv3-adj-sid-sub-tlvs;
+    uses ospfv3-lan-adj-sid-sub-tlvs;
+    description
+      "OSPFv3 Area-Scoped Adj-SID Sub-TLV.";
   }
 }
