@@ -551,9 +551,9 @@ module ietf-ospf-sr {
   augment "/rt:routing/rt:control-plane-protocols/"
         + "rt:control-plane-protocol/ospf:ospf/"
         + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface/"
-        + "ospf:fast-reroute" {
-    when "../../../../../../rt:type = 'ospf:ospfv2' or "
-       + "../../../../../../rt:type = 'ospf:ospfv3'" {
+        + "ospf:fast-reroute/ospf:lfa" {
+    when "../../../../../../../rt:type = 'ospf:ospfv2' or "
+       + "../../../../../../../rt:type = 'ospf:ospfv3'" {
       description
         "This augments the OSPF routing protocol when used.";
     }
