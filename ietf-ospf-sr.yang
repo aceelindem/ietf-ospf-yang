@@ -567,19 +567,43 @@ module ietf-ospf-sr {
         description
          "Enables TI-LFA computation.";
       }
-      container tie-breaker {
-        leaf node-protection {
-          type uint8;
+      container selection-tie-breakers {
+        container node-protection {
+          presence "Presence of container enables the node
+                    protection tie-breaker";
+          leaf priority {
+            type uint8;
+            default 128;
+            description
+              "Priority for node protection tie-breaker with
+               a lower priority being more preferred.";
+          }
           description
-            "Enable node protection.";
+            "Enable node protection as a TI-LFA path
+             selection tie-breaker. A path providing node
+             protection will be selected over one that
+             doesn't provide node protection.";
         }
-        leaf srlg-disjoint {
-          type uint8;
+        container srlg-disjoint {
+          presence "Presence of container enables the SRLG
+                    disjoint tie-breaker";
+          leaf priority {
+            type uint8;
+            default 128;
+            description
+              "Priority for SRLG disjoint tie-breaker with
+               a lower priority being more preferred.";
+          }
           description
-            "Enable SRLG protection.";
+            "Enable SRLG (Shared Resource Link Group)
+             disjoint  as a TI-LFA path selection tie-breaker.
+             A path providing node a disjoint path for SRLG
+             links from the primary path will be selected over
+             one that doesn't provide an SRLG disjoint path.";
         }
         description
-          "Tie-breaker with priorities.";
+          "Configure path selection tie-breakers and their
+           respective priorities for the TI-LFA computation.";
       }
       description
         "Topology Independent Loop Free Alternate
@@ -606,8 +630,8 @@ module ietf-ospf-sr {
         "Force remote LFA to use segment routing path instead of LDP
          path. The value of this leaf is in effect only when
          remote-lfa is enabled.";
-      }
-  }	  
+    }
+  }
 
   /* Database */
   augment "/rt:routing/"
