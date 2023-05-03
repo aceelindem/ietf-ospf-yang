@@ -102,7 +102,7 @@ module ietf-ospf-sr {
 
   reference "RFC XXXX";
 
-  revision 2023-02-24 {
+  revision 2023-04-30 {
     description
       "Initial revision.";
     reference
