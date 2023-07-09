@@ -526,10 +526,10 @@ module: ietf-ospf-sr
                 +--ro length?   uint16
                 +--ro value?    yang:hex-string
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:database
-          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
-          /ospf:version/ospf:ospfv3/ospf:ospfv3/ospf:body
-          /ospfv3-e-lsa:e-nssa:
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+          /ospf:body/ospfv3-e-lsa:e-nssa:
     +--ro ospfv3-extended-prefix-range-tlvs
        +--ro extended-prefix-range-tlv* []
           +--ro prefix-length?         uint8
@@ -599,10 +599,10 @@ module: ietf-ospf-sr
           +--ro algorithm?                 uint8
           +--ro sid?                       uint32
   augment /rt:routing/rt:control-plane-protocols
-          /rt:control-plane-protocol/ospf:ospf/ospf:database
-          /ospf:as-scope-lsa-type/ospf:as-scope-lsas/ospf:as-scope-lsa
-          /ospf:version/ospf:ospfv3/ospf:ospfv3/ospf:body
-          /ospfv3-e-lsa:e-nssa/ospfv3-e-lsa:e-external-tlvs
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
+          /ospf:database/ospf:area-scope-lsa-type/ospf:area-scope-lsas
+          /ospf:area-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+          /ospf:body/ospfv3-e-lsa:e-nssa/ospfv3-e-lsa:e-external-tlvs
           /ospfv3-e-lsa:external-prefix-tlv:
     +--ro perfix-sid-sub-tlvs
        +--ro prefix-sid-sub-tlv* []
@@ -641,7 +641,7 @@ module: ietf-ospf-sr
   </t>
   <figure>
     <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-sr@2023-04-30.yang"
+<CODE BEGINS> file "ietf-ospf-sr@2023-07-09.yang"
 module ietf-ospf-sr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr";
@@ -746,7 +746,7 @@ module ietf-ospf-sr {
 
   reference "RFC XXXX";
 
-  revision 2023-04-30 {
+  revision 2023-07-09 {
     description
       "Initial revision.";
     reference
@@ -1653,9 +1653,9 @@ module ietf-ospf-sr {
 
   augment "/rt:routing/"
     + "rt:control-plane-protocols/rt:control-plane-protocol/"
-    + "ospf:ospf/ospf:database/"
-    + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
-    + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+    + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+    + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
     + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-nssa" {
     when "'ospf:../../../../../../../../../"
       + "rt:type' = 'ospf:ospfv3'" {
@@ -1664,7 +1664,7 @@ module ietf-ospf-sr {
     }
     uses ospfv3-extended-prefix-range-tlvs;
     description
-      "OSPFv3 AS-Scoped E-NSSA LSA.";
+      "OSPFv3 Area-Scoped E-NSSA LSA.";
   }
 
   /* Prefix SID Sub-TLV in Intra-Area Prefix TLV */
@@ -1748,9 +1748,9 @@ module ietf-ospf-sr {
 
   augment "/rt:routing/"
     + "rt:control-plane-protocols/rt:control-plane-protocol/"
-    + "ospf:ospf/ospf:database/"
-    + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
-    + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+    + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+    + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
     + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-nssa/"
     + "ospfv3-e-lsa:e-external-tlvs/"
     + "ospfv3-e-lsa:external-prefix-tlv" {
@@ -1761,7 +1761,7 @@ module ietf-ospf-sr {
     }
     uses ospfv3-prefix-sid-sub-tlvs;
     description
-      "OSPFv3 AS-Scoped External Prefix TLV.";
+      "OSPFv3 Area-Scoped External Prefix TLV.";
   }
 
   /* Adj-SID sub-TLV */
@@ -1951,415 +1951,88 @@ filing system or remote ones accessed by http (http://domain/dir/... ).-->
         <t>Note: '\' line wrapping per <xref target="RFC8792" format="default"/>. </t>
         <artwork name="" type="" align="left" alt=""><![CDATA[
 <?xml version='1.0' encoding='UTF-8'?>
-<data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <routing xmlns="urn:ietf:params:xml:ns:yang:ietf-routing">
+    <router-id>1.1.1.1</router-id>
     <control-plane-protocols>
       <control-plane-protocol>
+        <type xmlns:ospf="urn:ietf:params:xml:ns:yang:ietf-ospf">\
+          ospf:ospfv2</type>
+        <name>OSPFv2</name>
         <ospf xmlns="urn:ietf:params:xml:ns:yang:ietf-ospf">
-          <database>
-            <as-scope-lsa-type>
-              <as-scope-lsas>
-                <as-scope-lsa>
-                  <ospfv2>
-                    <body>
-                      <opaque>
-                        <ri-opaque>
-                          <sr-algorithm-tlv xmlns="urn:ietf:params:\
-                           xml:ns:yang:ietf-ospf-sr">
-                            <sr-algorithm xmlns:sr-cmn="urn:ietf:\
-                             params:xml:ns:yang:ietf-segment-routing\
-                             -common">sr-cmn:prefix-sid-algorithm\
-                             -shortest-path</sr-algorithm>
-                            <sr-algorithm xmlns:sr-cmn="urn:ietf:\
-                             params:xml:ns:yang:ietf-segment-routing\
-                             -common">sr-cmn:prefix-sid-algorithm-\
-                             strict-spf</sr-algorithm>
-                          </sr-algorithm-tlv>
-                        </ri-opaque>
-                        <extended-prefix-opaque>
-                          <extended-prefix-tlv>
-                            <prefix>192.0.2.0/24</prefix>
-                            <prefix-sid-sub-tlvs xmlns="urn:ietf:\
-                             params:xml:ns:yang:ietf-ospf-sr">
-                              <prefix-sid-sub-tlv>
-                                <prefix-sid-flags>
-                                  <bits>
-                                  </bits>
-                                </prefix-sid-flags>
-                                <mt-id>0</mt-id>
-                                <algorithm xmlns:sr-cmn="urn:ietf:\
-                                 params:xml:ns:yang:ietf-segment-\
-                                 routing-common">sr-cmn:prefix-sid-\
-                                 algorithm-strict-spf</algorithm>
-                                <sid>1</sid>
-                              </prefix-sid-sub-tlv>
-                            </prefix-sid-sub-tlvs>
-                          </extended-prefix-tlv>
-                        </extended-prefix-opaque>
-                      </opaque>
-                    </body>
-                  </ospfv2>
-                </as-scope-lsa>
-              </as-scope-lsas>
-            </as-scope-lsa-type>
-          </database>
           <areas>
             <area>
-              <database>
-                <area-scope-lsa-type>
-                  <lsa-type/>
-                  <area-scope-lsas>
-                    <area-scope-lsa>
-                      <ospfv2>
-                        <body>
-                          <opaque>
-                            <ri-opaque>
-                              <sr-algorithm-tlv xmlns="urn:ietf:\
-                               params:xml:ns:yang:ietf-ospf-sr">
-                                <sr-algorithm xmlns:sr-cmn="urn:ietf:\
-                                 params:xml:ns:yang:ietf-segment-\
-                                 routing-common">sr-cmn:prefix-sid-\
-                                 algorithm-shortest-path</sr-algorithm>
-                                <sr-algorithm xmlns:sr-cmn="urn:ietf:\
-                                 params:xml:ns:yang:ietf-segment-\
-                                 routing-common">sr-cmn:prefix-sid-\
-                                 algorithm-strict-spf</sr-algorithm>
-                              </sr-algorithm-tlv>
-                            </ri-opaque>
-                            <extended-prefix-opaque>
-                              <extended-prefix-tlv>
-                                <prefix>192.0.2.0/24</prefix>
-                                <prefix-sid-sub-tlvs xmlns="urn:ietf:\
-                                 params:xml:ns:yang:ietf-ospf-sr">
-                                  <prefix-sid-sub-tlv>
-                                    <prefix-sid-flags>
-                                      <bits>
-                                        <!-- # entries: 0.. -->
-                                      </bits>
-                                    </prefix-sid-flags>
-                                    <mt-id>0</mt-id>
-                                    <algorithm xmlns:sr-cmn="urn:ietf:\
-                                     params:xml:ns:yang:ietf-segment-\
-                                     routing-common">sr-cmn:prefix-sid\
-                                     -algorithm-strict-spf</algorithm>
-                                    <sid>1</sid>
-                                  </prefix-sid-sub-tlv>
-                                </prefix-sid-sub-tlvs>
-                              </extended-prefix-tlv>
-                            </extended-prefix-opaque>
-                          </opaque>
-                        </body>
-                      </ospfv2>
-                    </area-scope-lsa>
-                  </area-scope-lsas>
-                </area-scope-lsa-type>
-              </database>
+              <area-id>0.0.0.0</area-id>
               <interfaces>
                 <interface>
-                  <database>
-                    <link-scope-lsa-type>
-                      <lsa-type/>
-                      <link-scope-lsas>
-                        <link-scope-lsa>
-                          <ospfv2>
-                            <body>
-                              <opaque>
-                                <ri-opaque>
-                                  <sr-algorithm-tlv xmlns="urn:ietf:\
-                                   params:xml:ns:yang:ietf-ospf-sr">
-                                    <sr-algorithm xmlns:sr-cmn="urn:\
-                                     ietf:params:xml:ns:yang:ietf-\
-                                     segment-routing-common">sr-cmn:\
-                                     prefix-sid-algorithm-shortest-\
-                                     path</sr-algorithm>
-                                    <sr-algorithm xmlns:sr-cmn="urn:\
-                                     ietf:params:xml:ns:yang:ietf-\
-                                     segment-routing-common">sr-cmn:\
-                                     prefix-sid-algorithm-strict-spf\
-                                    </sr-algorithm>
-                                  </sr-algorithm-tlv>
-                                </ri-opaque>
-                                <extended-prefix-opaque>
-                                  <extended-prefix-tlv>
-                                    <prefix>192.0.2.0/24</prefix>
-                                    <prefix-sid-sub-tlvs xmlns="urn:\
-                                     ietf:params:xml:ns:yang:ietf-\
-                                     ospf-sr">
-                                      <prefix-sid-sub-tlv>
-                                        <prefix-sid-flags>
-                                          <bits>
-                                          </bits>
-                                        </prefix-sid-flags>
-                                        <mt-id>0</mt-id>
-                                        <algorithm xmlns:sr-cmn="urn:\
-                                         ietf:params:xml:ns:yang:\
-                                         ietf-segment-routing-common">\
-                                         sr-cmn:prefix-sid-algorithm-\
-                                         strict-spf</algorithm>
-                                        <sid>1</sid>
-                                      </prefix-sid-sub-tlv>
-                                    </prefix-sid-sub-tlvs>
-                                  </extended-prefix-tlv>
-                                </extended-prefix-opaque>
-                              </opaque>
-                            </body>
-                          </ospfv2>
-                        </link-scope-lsa>
-                      </link-scope-lsas>
-                    </link-scope-lsa-type>
-                  </database>
+                  <name>eth0</name>
+                  <segment-routing xmlns="urn:ietf:params:xml:ns:yang:\
+                    ietf-ospf-sr">
+                    <adjacency-sid>
+                      <adj-sids>
+                        <value>3888</value>
+                      </adj-sids>
+                    </adjacency-sid>
+                  </segment-routing>
                 </interface>
               </interfaces>
-              <extended-lsa-support xmlns="urn:ietf:params:xml:ns:\
-               yang:ietf-ospfv3-extended-lsa"/>
             </area>
           </areas>
           <segment-routing xmlns="urn:ietf:params:xml:ns:yang:\
-           ietf-ospf-sr">
+            ietf-ospf-sr">
             <enabled>true</enabled>
           </segment-routing>
+          <protocol-srgb xmlns="urn:ietf:params:xml:ns:yang:\
+            ietf-ospf-sr">
+            <srgb>
+              <lower-bound>4000</lower-bound>
+              <upper-bound>5000</upper-bound>
+            </srgb>
+          </protocol-srgb>
         </ospf>
       </control-plane-protocol>
     </control-plane-protocols>
-    <segment-routing xmlns="uurn:ietf:params:xml:ns:yang:\
-     ietf-segment-routing">
-      <sr-mpls xmlns="urn:ietf:params:xml:ns:yang:\
-       ietf-segment-routing-mpls">
-        <bindings>
-          <connected-prefix-sid-map>
-            <connected-prefix-sid>
-              <prefix>192.0.2.0/24</prefix>
-              <algorithm xmlns:sr-cmn="urn:ietf:params:xml:ns:yang:\
-               ietf-segment-routing-common">\
-               sr-cmn:prefix-sid-algorithm-strict-spf</algorithm>
-              <start-sid>100</start-sid>
-              <range>1</range>
-              <last-hop-behavior>php</last-hop-behavior>
-            </connected-prefix-sid>
-          </connected-prefix-sid-map>
-        </bindings>
-        <srgb>
-          <srgb>
-            <lower-bound>45000</lower-bound>
-            <upper-bound>55000</upper-bound>
-          </srgb>
-        </srgb>
-      </sr-mpls>
-    </segment-routing>
   </routing>
-</data>
   ]]></artwork>
       <t>The following is the same example using JSON format.</t>
       <artwork name="" type="" align="left" alt=""><![CDATA[
 {
- "data": {
   "routing": {
-   "control-plane-protocols": {
-    "control-plane-protocol": {
-     "ospf": {
-      "database": {
-       "as-scope-lsa-type": {
-        "as-scope-lsas": {
-         "as-scope-lsa": {
-          "ospfv2": {
-           "body": {
-            "opaque": {
-             "ri-opaque": {
-              "sr-algorithm-tlv": {
-               "sr-algorithm": [
-                {
-                 "_xmlns:sr-cmn": "urn:ietf:params:xml:ns:yang: \
-                 ietf-segment-routing-common",
-                 "__text": "sr-cmn:prefix-sid-algorithm-shortest-path"
-                },
-                {
-                 "_xmlns:sr-cmn": "urn:ietf:params:xml:ns:yang: \
-                 ietf-segment-routing-common",
-                 "__text": "sr-cmn:prefix-sid-algorithm-strict-spf"
-                }
-               ],
-               "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-ospf-sr"
-              }
-             },
-             "extended-prefix-opaque": {
-              "extended-prefix-tlv": {
-               "prefix": "192.0.2.0/24",
-               "prefix-sid-sub-tlvs": {
-                "prefix-sid-sub-tlv": {
-                 "prefix-sid-flags": {},
-                 "mt-id": "0",
-                 "algorithm": {
-                  "_xmlns:sr-cmn": "urn:ietf:params:xml:ns:yang: \
-                  ietf-segment-routing-common",
-                  "__text": "sr-cmn:prefix-sid-algorithm-strict-spf"
-                 },
-                 "sid": "1"
-                },
-                "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-ospf-sr"
-               }
-              }
-             }
-            }
-           }
-          }
-         }
-        }
-       }
-      },
-      "areas": {
-       "area": {
-        "database": {
-         "area-scope-lsa-type": {
-          "lsa-type": "",
-          "area-scope-lsas": {
-           "area-scope-lsa": {
-            "ospfv2": {
-             "body": {
-              "opaque": {
-               "ri-opaque": {
-                "sr-algorithm-tlv": {
-                 "sr-algorithm": [
-                  {
-                   "_xmlns:sr-cmn": "urn:ietf:params:xml:ns:yang: \
-                   ietf-segment-routing-common",
-                   "__text": "sr-cmn:prefix-sid-algorithm-shortest-path"
-                  },
-                  {
-                   "_xmlns:sr-cmn": "urn:ietf:params:xml:ns:yang: \
-                   ietf-segment-routing-common",
-                   "__text": "sr-cmn:prefix-sid-algorithm-strict-spf"
-                  }
-                 ],
-                 "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-ospf-sr"
-                }
-               },
-               "extended-prefix-opaque": {
-                "extended-prefix-tlv": {
-                 "prefix": "192.0.2.0/24",
-                 "prefix-sid-sub-tlvs": {
-                  "prefix-sid-sub-tlv": {
-                   "prefix-sid-flags": {
-                    "bits": {}
-                   },
-                   "mt-id": "0",
-                   "algorithm": {
-                    "_xmlns:sr-cmn": "urn:ietf:params:xml:ns:yang: \
-                    ietf-segment-routing-common",
-                    "__text": "sr-cmn:prefix-sid-algorithm-strict-spf"
-                   },
-                   "sid": "1"
-                  },
-                  "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-ospf-sr"
-                 }
-                }
-               }
-              }
-             }
-            }
-           }
-          }
-         }
-        },
-        "interfaces": {
-         "interface": {
-          "database": {
-           "link-scope-lsa-type": {
-            "lsa-type": "",
-            "link-scope-lsas": {
-             "link-scope-lsa": {
-              "ospfv2": {
-               "body": {
-                "opaque": {
-                 "ri-opaque": {
-                  "sr-algorithm-tlv": {
-                   "sr-algorithm": [
-                    {
-                     "_xmlns:sr-cmn": "urn:ietf:params:xml:ns:yang: \
-                     ietf-segment-routing-common",
-                     "__text": "sr-cmn: \
-                     prefix-sid-algorithm-shortest-path"
-                    },
-                    {
-                     "_xmlns:sr-cmn": "urn:ietf:params:xml:ns:yang: \
-                     ietf-segment-routing-common",
-                     "__text": "sr-cmn:prefix-sid-algorithm-strict-spf"
+    "router-id": "1.1.1.1",
+    "control-plane-protocols": {
+      "control-plane-protocol": {
+        "type": "ospf:ospfv2",
+        "name": "OSPFv2",
+        "ospf": {
+          "areas": {
+            "area": {
+              "area-id": "0.0.0.0",
+              "interfaces": {
+                "interface": {
+                  "name": "eth0",
+                  "segment-routing": {
+                    "adjacency-sid": {
+                      "adj-sids": {
+                        "value": 3888
+                      }
                     }
-                   ],
-                   "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-ospf-sr"
                   }
-                 },
-                 "extended-prefix-opaque": {
-                  "extended-prefix-tlv": {
-                   "prefix": "192.0.2.0/24",
-                   "prefix-sid-sub-tlvs": {
-                    "prefix-sid-sub-tlv": {
-                     "prefix-sid-flags": {},
-                     "mt-id": "0",
-                     "algorithm": {
-                      "_xmlns:sr-cmn": "urn:ietf:params:xml:ns:yang: \
-                      ietf-segment-routing-common",
-                      "__text": "sr-cmn:prefix-sid-algorithm-strict-spf"
-                     },
-                     "sid": "1"
-                    },
-                    "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-ospf-sr"
-                   }
-                  }
-                 }
                 }
-               }
               }
-             }
             }
-           }
+          },
+          "segment-routing": {
+            "enabled": true
+          },
+          "protocol-srgb": {
+            "srgb": {
+              "lower-bound": 4000,
+              "upper-bound": 5000
+            }
           }
-         }
-        },
-        "extended-lsa-support": {
-         "_xmlns": "urn:ietf:params:xml:ns:yang:\
-         ietf-ospfv3-extended-lsa"
         }
-       }
-      },
-      "segment-routing": {
-       "enabled": "true",
-       "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-ospf-sr"
-      },
-      "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-ospf"
-     }
+      }
     }
-   },
-   "segment-routing": {
-    "sr-mpls": {
-     "bindings": {
-      "connected-prefix-sid-map": {
-       "connected-prefix-sid": {
-        "prefix": "192.0.2.0/24",
-        "algorithm": {
-         "_xmlns:sr-cmn": "urn:ietf:params:xml:ns:yang: \
-         ietf-segment-routing-common",
-         "__text": "sr-cmn:prefix-sid-algorithm-strict-spf"
-        },
-        "start-sid": "100",
-        "range": "1",
-        "last-hop-behavior": "php"
-       }
-      }
-     },
-     "srgb": {
-      "srgb": {
-       "lower-bound": "45000",
-       "upper-bound": "55000"
-      }
-     },
-     "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-segment-routing-mpls"
-    },
-    "_xmlns": "uurn:ietf:params:xml:ns:yang:ietf-segment-routing"
-   },
-   "_xmlns": "urn:ietf:params:xml:ns:yang:ietf-routing"
-  },
-  "_xmlns": "urn:ietf:params:xml:ns:netconf:base:1.0"
- }
+  }
 }
   ]]></artwork>
 

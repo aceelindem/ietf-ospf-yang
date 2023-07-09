@@ -102,7 +102,7 @@ module ietf-ospf-sr {
 
   reference "RFC XXXX";
 
-  revision 2023-04-30 {
+  revision 2023-07-09 {
     description
       "Initial revision.";
     reference
@@ -1009,9 +1009,9 @@ module ietf-ospf-sr {
 
   augment "/rt:routing/"
     + "rt:control-plane-protocols/rt:control-plane-protocol/"
-    + "ospf:ospf/ospf:database/"
-    + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
-    + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+    + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+    + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
     + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-nssa" {
     when "'ospf:../../../../../../../../../"
       + "rt:type' = 'ospf:ospfv3'" {
@@ -1020,7 +1020,7 @@ module ietf-ospf-sr {
     }
     uses ospfv3-extended-prefix-range-tlvs;
     description
-      "OSPFv3 AS-Scoped E-NSSA LSA.";
+      "OSPFv3 Area-Scoped E-NSSA LSA.";
   }
 
   /* Prefix SID Sub-TLV in Intra-Area Prefix TLV */
@@ -1104,9 +1104,9 @@ module ietf-ospf-sr {
 
   augment "/rt:routing/"
     + "rt:control-plane-protocols/rt:control-plane-protocol/"
-    + "ospf:ospf/ospf:database/"
-    + "ospf:as-scope-lsa-type/ospf:as-scope-lsas/"
-    + "ospf:as-scope-lsa/ospf:version/ospf:ospfv3/"
+    + "ospf:ospf/ospf:areas/ospf:area/ospf:database/"
+    + "ospf:area-scope-lsa-type/ospf:area-scope-lsas/"
+    + "ospf:area-scope-lsa/ospf:version/ospf:ospfv3/"
     + "ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-nssa/"
     + "ospfv3-e-lsa:e-external-tlvs/"
     + "ospfv3-e-lsa:external-prefix-tlv" {
@@ -1117,7 +1117,7 @@ module ietf-ospf-sr {
     }
     uses ospfv3-prefix-sid-sub-tlvs;
     description
-      "OSPFv3 AS-Scoped External Prefix TLV.";
+      "OSPFv3 Area-Scoped External Prefix TLV.";
   }
 
   /* Adj-SID sub-TLV */
