@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-21"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-22"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -26,16 +26,16 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <!-- The abbreviated title is used in the page header - it is only necessary if the
        full title is longer than 39 characters -->
 
-  <title abbrev="OSPF SR YANG Data Model" >
-    OSPF SR (Segment Routing) YANG Data Model
+  <title abbrev="OSPF SR YANG" >
+    A YANG Data Model for OSPF Segment Routing
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-21"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-22"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
 
   <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
-    <organization>Futurewei</organization>
+    <organization>Futurewei Technologies</organization>
     <address>
       <postal>
         <street>2330 Central Expressway</street>
@@ -47,7 +47,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
         <country>USA</country>
       </postal>
       <phone/>
-      <email>yingzhen.qu@futurewei.com</email>
+      <email>yingzhen.ietf@gmail.com</email>
       <!-- uri and facsimile elements may also be added -->
     </address>
   </author>
@@ -474,7 +474,7 @@ module: ietf-ospf-sr
           |  +--ro prefix-sid-sub-tlv* []
           |     +--ro ospfv3-prefix-sid-flags
           |     |  +--ro bits*   identityref
-          |     +--ro algorithm?                 uint8
+          |     +--ro algorithm?                 identityref
           |     +--ro sid?                       uint32
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
@@ -496,7 +496,7 @@ module: ietf-ospf-sr
           |  +--ro prefix-sid-sub-tlv* []
           |     +--ro ospfv3-prefix-sid-flags
           |     |  +--ro bits*   identityref
-          |     +--ro algorithm?                 uint8
+          |     +--ro algorithm?                 identityref
           |     +--ro sid?                       uint32
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
@@ -518,7 +518,7 @@ module: ietf-ospf-sr
           |  +--ro prefix-sid-sub-tlv* []
           |     +--ro ospfv3-prefix-sid-flags
           |     |  +--ro bits*   identityref
-          |     +--ro algorithm?                 uint8
+          |     +--ro algorithm?                 identityref
           |     +--ro sid?                       uint32
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
@@ -540,7 +540,7 @@ module: ietf-ospf-sr
           |  +--ro prefix-sid-sub-tlv* []
           |     +--ro ospfv3-prefix-sid-flags
           |     |  +--ro bits*   identityref
-          |     +--ro algorithm?                 uint8
+          |     +--ro algorithm?                 identityref
           |     +--ro sid?                       uint32
           +--ro unknown-tlvs
              +--ro unknown-tlv* []
@@ -558,7 +558,7 @@ module: ietf-ospf-sr
        +--ro prefix-sid-sub-tlv* []
           +--ro ospfv3-prefix-sid-flags
           |  +--ro bits*   identityref
-          +--ro algorithm?                 uint8
+          +--ro algorithm?                 identityref
           +--ro sid?                       uint32
   augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
@@ -571,7 +571,7 @@ module: ietf-ospf-sr
        +--ro prefix-sid-sub-tlv* []
           +--ro ospfv3-prefix-sid-flags
           |  +--ro bits*   identityref
-          +--ro algorithm?                 uint8
+          +--ro algorithm?                 identityref
           +--ro sid?                       uint32
   augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
@@ -584,7 +584,7 @@ module: ietf-ospf-sr
        +--ro prefix-sid-sub-tlv* []
           +--ro ospfv3-prefix-sid-flags
           |  +--ro bits*   identityref
-          +--ro algorithm?                 uint8
+          +--ro algorithm?                 identityref
           +--ro sid?                       uint32
   augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:database
@@ -596,7 +596,7 @@ module: ietf-ospf-sr
        +--ro prefix-sid-sub-tlv* []
           +--ro ospfv3-prefix-sid-flags
           |  +--ro bits*   identityref
-          +--ro algorithm?                 uint8
+          +--ro algorithm?                 identityref
           +--ro sid?                       uint32
   augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
@@ -608,7 +608,7 @@ module: ietf-ospf-sr
        +--ro prefix-sid-sub-tlv* []
           +--ro ospfv3-prefix-sid-flags
           |  +--ro bits*   identityref
-          +--ro algorithm?                 uint8
+          +--ro algorithm?                 identityref
           +--ro sid?                       uint32
   augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:areas/ospf:area
@@ -635,13 +635,14 @@ module: ietf-ospf-sr
   <name>OSPF Segment Routing YANG Module</name>
   <t>
     <xref target="RFC2328"/>, <xref target="RFC4750"/>, <xref target="RFC5340"/>,
-    <xref target="RFC5643"/>, <xref target="RFC5838"/>, <xref target="RFC8343"/>,
+    <xref target="RFC5643"/>, <xref target="RFC5838"/>, <xref target="RFC6991"/>, 
+    <xref target="RFC8294"/>, <xref target="RFC8343"/>,
     <xref target="RFC8476"/> and <xref target="RFC8349"/> are referenced in the
     YANG model.
   </t>
   <figure>
     <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-sr@2023-07-09.yang"
+<CODE BEGINS> file "ietf-ospf-sr@2023-11-19.yang"
 module ietf-ospf-sr {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr";
@@ -649,42 +650,46 @@ module ietf-ospf-sr {
   prefix ospf-sr;
 
   import ietf-inet-types {
-    prefix "inet";
-    reference "RFC 6991 - Common YANG Data Types";
+    prefix inet;
+    reference
+      "RFC 6991 - Common YANG Data Types";
   }
 
   import ietf-yang-types {
-    prefix "yang";
-    reference "RFC 6991 - Common YANG Data Types";
+    prefix yang;
+    reference
+      "RFC 6991 - Common YANG Data Types";
   }
 
   import ietf-routing-types {
-    prefix "rt-types";
-    reference "RFC 8249 - Common YANG Data Types for the Routing Area";
+    prefix rt-types;
+    reference
+      "RFC 8294 - Common YANG Data Types for the Routing Area";
   }
 
   import ietf-routing {
-    prefix "rt";
-    reference "RFC 8349 - A YANG Data Model for Routing
-               Management (NMDA Version)";
+    prefix rt;
+    reference 
+      "RFC 8349 - A YANG Data Model for Routing
+                  Management (NMDA Version)";
   }
 
   import ietf-segment-routing-common {
-    prefix "sr-cmn";
-    reference "RFC 9020 - YANG Data Model for Segment
-               Routing";
+    prefix sr-cmn;
+    reference
+      "RFC 9020 - YANG Data Model for Segment Routing";
   }
 
   import ietf-segment-routing-mpls {
-    prefix "sr-mpls";
-    reference "RFC 9020 - YANG Data Model for Segment
-               Routing";
+    prefix sr-mpls;
+    reference
+      "RFC 9020 - YANG Data Model for Segment Routing";
   }
 
   import ietf-ospf {
-    prefix "ospf";
-    reference "RFC 9129 - YANG Data Model for the OSPF
-               Protocol";
+    prefix ospf;
+    reference
+      "RFC 9129 - YANG Data Model for the OSPF Protocol";
   }
 
   import ietf-ospfv3-extended-lsa {
@@ -699,7 +704,7 @@ module ietf-ospf-sr {
       WG List:  <mailto:lsr@ietf.org>
 
       Author:   Yingzhen Qu
-                <mailto:yingzhen.qu@futurewei.com>
+                <mailto:yingzhen.ietf@gmail.com>
       Author:   Acee Lindem
                 <mailto:acee.ietf@gmail.com>
       Author:   Derek Yeung
@@ -746,7 +751,7 @@ module ietf-ospf-sr {
 
   reference "RFC XXXX";
 
-  revision 2023-07-09 {
+  revision 2023-11-19 {
     description
       "Initial revision.";
     reference
@@ -1048,7 +1053,9 @@ module ietf-ospf-sr {
           description "Segment Identifier (SID) Flags.";
         }
         leaf algorithm {
-          type uint8;
+          type identityref {
+           base sr-cmn:prefix-sid-algorithm;
+          }
           description
             "The algorithm associated with the prefix-SID.";
         }
@@ -1923,9 +1930,11 @@ filing system or remote ones accessed by http (http://domain/dir/... ).-->
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5838.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6020.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6241.xml"/>
-        <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6242.xml"/>        
+        <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6242.xml"/>
+        <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6991.xml"/>        
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8040.xml"/>
+        <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8294.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8343.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8349.xml"/>
