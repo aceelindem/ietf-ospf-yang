@@ -61,8 +61,8 @@ module ietf-ospf-sr {
                <mailto:ingwherchen@mitre.org>";
   description
     "This YANG module defines the generic configuration
-     and operational state for OSPF Segment Routing, which is
-     common across all of the vendor implementations. It is
+     and operational state for OSPF Segment Routing (SR), which
+     is common across all of the vendor implementations. It is
      intended that the module will be extended by vendors to
      define vendor-specific OSPF Segment Routing configuration
      and operational parameters and policies.
@@ -121,7 +121,7 @@ module ietf-ospf-sr {
 
   identity prefix-sid-bit {
     description
-      "Base identity for prefix sid sub-TLV bits.";
+      "Base identity for prefix SID sub-TLV bits.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing
        RFC 8666: OSPFv3 Extensions for Segment Routing";
@@ -368,7 +368,7 @@ module ietf-ospf-sr {
 
   grouping local-block-tlvs {
     description
-      "SR local block TLV contains the
+      "The SR local block TLV contains the
        range of labels reserved for local SIDs.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing
@@ -391,9 +391,9 @@ module ietf-ospf-sr {
 
   grouping srms-preference-tlv {
     description
-      "The SRMS preference TLV is used to advertise
-       a preference associated with the node that acts
-       as an SR Mapping Server.";
+      "The SR Mapping Server (SRMS)  preference TLV is
+       used to advertise a preference associated with
+       the node that acts as an SR Mapping Server.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing
        (Section 3.4)";
