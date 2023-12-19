@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-24"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-25"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing for the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-24"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-25"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -645,11 +645,11 @@ augment /rt:routing/rt:control-plane-protocols
   </t>
   <figure>
     <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-sr-mpls@2023-12-12.yang"
+<CODE BEGINS> file "ietf-ospf-sr-mpls@2023-12-19.yang"
 module ietf-ospf-sr-mpls {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr-mpls";
-  prefix ospf-sr;
+  prefix ospf-sr-mpls;
 
   import ietf-inet-types {
     prefix inet;
@@ -741,11 +741,12 @@ module ietf-ospf-sr-mpls {
   reference
     "RFC XXXX";
 
-  revision 2023-12-12 {
+  revision 2023-12-19 {
     description
       "Initial revision.";
     reference
-      "RFC XXXX: A YANG Data Model for OSPF Segment Routing.";
+      "RFC XXXX: A YANG Data Model for OSPF Segment Routing for
+       the MPLS Data Plane";
   }
 
   feature remote-lfa-sr {
@@ -1072,7 +1073,7 @@ module ietf-ospf-sr-mpls {
         container ospfv3-prefix-sid-flags {
           leaf-list bits {
             type identityref {
-              base ospf-sr:prefix-sid-bit;
+              base prefix-sid-bit;
             }
             description
               "Prefix SID sub-TLV bits.";
@@ -1849,7 +1850,6 @@ module ietf-ospf-sr-mpls {
       "OSPFv3 Area-Scoped Adj-SID Sub-TLV.";
   }
 }
-
 <CODE ENDS>
 ]]></artwork>
 </figure>

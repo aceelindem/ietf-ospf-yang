@@ -1,7 +1,7 @@
 module ietf-ospf-sr-mpls {
   yang-version 1.1;
-  namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr";
-  prefix ospf-sr;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr-mpls";
+  prefix ospf-sr-mpls;
 
   import ietf-inet-types {
     prefix inet;
@@ -93,11 +93,12 @@ module ietf-ospf-sr-mpls {
   reference
     "RFC XXXX";
 
-  revision 2023-12-12 {
+  revision 2023-12-19 {
     description
       "Initial revision.";
     reference
-      "RFC XXXX: A YANG Data Model for OSPF Segment Routing.";
+      "RFC XXXX: A YANG Data Model for OSPF Segment Routing for
+       the MPLS Data Plane";
   }
 
   feature remote-lfa-sr {
@@ -424,7 +425,7 @@ module ietf-ospf-sr-mpls {
         container ospfv3-prefix-sid-flags {
           leaf-list bits {
             type identityref {
-              base ospf-sr:prefix-sid-bit;
+              base prefix-sid-bit;
             }
             description
               "Prefix SID sub-TLV bits.";
