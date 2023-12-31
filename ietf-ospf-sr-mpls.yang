@@ -93,7 +93,7 @@ module ietf-ospf-sr-mpls {
   reference
     "RFC XXXX";
 
-  revision 2023-12-19 {
+  revision 2023-12-30 {
     description
       "Initial revision.";
     reference
@@ -600,7 +600,23 @@ module ietf-ospf-sr-mpls {
     description
       "This augments the OSPF protocol interface
        configuration with segment routing.";
-    uses sr-mpls:igp-interface;
+    uses sr-mpls:igp-interface {
+      augment "segment-routing/adjacency-sid/adj-sids" {
+        when "((../../../ospf:interface-type = 'broadcast') or
+              (../../../ospf:interface-type = 'non-broadcast'))" {
+          description
+            "This augments broadcast and non-broadcast multi-access
+             interface.";
+        }
+        description
+          "This augments LAN interface adj-sid with neighbor-id.";
+        leaf neighbor-id {
+          type inet:ip-address;
+          description
+            "Neighbor's Router ID, IPv4 address, or IPv6 address.";
+        }
+      }    
+    }
   }
 
   augment "/rt:routing/rt:control-plane-protocols/"

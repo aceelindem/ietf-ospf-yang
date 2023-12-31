@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-25"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-26"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing for the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-25"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-26"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -178,6 +178,7 @@ augment /rt:routing/rt:control-plane-protocols
         |  +--rw value         uint32
         |  +--rw protected?    boolean
         |  +--rw weight?       uint8
+        |  +--rw neighbor-id?  inet:ip-address
         +--rw advertise-adj-group-sid* [group-id]
         |  +--rw group-id    uint32
         +--rw advertise-protection?      enumeration
@@ -645,7 +646,7 @@ augment /rt:routing/rt:control-plane-protocols
   </t>
   <figure>
     <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-sr-mpls@2023-12-19.yang"
+<CODE BEGINS> file "ietf-ospf-sr-mpls@2023-12-30.yang"
 module ietf-ospf-sr-mpls {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr-mpls";
@@ -741,7 +742,7 @@ module ietf-ospf-sr-mpls {
   reference
     "RFC XXXX";
 
-  revision 2023-12-19 {
+  revision 2023-12-30 {
     description
       "Initial revision.";
     reference
@@ -1248,7 +1249,23 @@ module ietf-ospf-sr-mpls {
     description
       "This augments the OSPF protocol interface
        configuration with segment routing.";
-    uses sr-mpls:igp-interface;
+    uses sr-mpls:igp-interface {
+      augment "segment-routing/adjacency-sid/adj-sids" {
+        when "((../../../ospf:interface-type = 'broadcast') or
+              (../../../ospf:interface-type = 'non-broadcast'))" {
+          description
+            "This augments broadcast and non-broadcast multi-access
+             interface.";
+        }
+        description
+          "This augments LAN interface adj-sid with neighbor-id.";
+        leaf neighbor-id {
+          type inet:ip-address;
+          description
+            "Neighbor's Router ID, IPv4 address, or IPv6 address.";
+        }
+      }    
+    }
   }
 
   augment "/rt:routing/rt:control-plane-protocols/"
@@ -1957,7 +1974,7 @@ module ietf-ospf-sr-mpls {
       <artwork name="" type="" align="left" alt=""><![CDATA[
       name: ietf-ospf-sr-mpls
       namespace: urn:ietf:params:xml:ns:yang:ietf-ospf-sr-mpls
-      prefix: ospf-sr
+      prefix: ospf-sr-mpls
       reference: RFC XXXX
       ]]></artwork>
     </section>
