@@ -117,51 +117,51 @@ module ietf-ospf-sr-mpls {
        Topology-Independent Fast Reroute using Segment Routing";
   }
 
-  identity prefix-sid-bit {
+  identity prefix-sid-flag {
     description
-      "Base identity for prefix SID sub-TLV bits.";
+      "Base identity for prefix SID sub-TLV flags.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing
        RFC 8666: OSPFv3 Extensions for Segment Routing";
   }
 
-  identity np-bit {
-    base prefix-sid-bit;
+  identity np-flag {
+    base prefix-sid-flag;
     description
       "No-PHP flag.";
   }
 
-  identity m-bit {
-    base prefix-sid-bit;
+  identity m-flag {
+    base prefix-sid-flag;
     description
       "Mapping server flag.";
   }
 
-  identity e-bit {
-    base prefix-sid-bit;
+  identity e-flag {
+    base prefix-sid-flag;
     description
       "Explicit-NULL flag.";
   }
 
-  identity v-bit {
-    base prefix-sid-bit;
+  identity v-flag {
+    base prefix-sid-flag;
     description
       "Value/Index flag.";
   }
 
-  identity l-bit {
-    base prefix-sid-bit;
+  identity l-flag {
+    base prefix-sid-flag;
     description
       "Local flag.";
   }
 
-  identity extended-prefix-range-bit {
+  identity extended-prefix-range-flag {
     description
-      "Base identity for extended prefix range TLV bits.";
+      "Base identity for extended prefix range TLV flags.";
   }
 
-  identity ia-bit {
-    base extended-prefix-range-bit;
+  identity ia-flag {
+    base extended-prefix-range-flag;
     description
       "Inter-Area flag. If set, advertisement is of
        inter-area type.";
@@ -169,40 +169,40 @@ module ietf-ospf-sr-mpls {
       "RFC 8665: OSPF Extensions for Segment Routing";
   }
 
-  identity adj-sid-bit {
+  identity adj-sid-flag {
     description
-      "Base identity for Adj-SID sub-TLV bits.";
+      "Base identity for Adj-SID sub-TLV flags.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing
        RFC 8666: OSPFv3 Extensions for Segment Routing";
   }
 
-  identity b-bit {
-    base adj-sid-bit;
+  identity b-flag {
+    base adj-sid-flag;
     description
       "Backup flag.";
   }
 
-  identity vi-bit {
-    base adj-sid-bit;
+  identity vi-flag {
+    base adj-sid-flag;
     description
       "Value/Index flag.";
   }
 
-  identity lo-bit {
-    base adj-sid-bit;
+  identity lo-flag {
+    base adj-sid-flag;
     description
       "Local/Global flag.";
   }
 
-  identity g-bit {
-    base adj-sid-bit;
+  identity g-flag {
+    base adj-sid-flag;
     description
       "Group flag.";
   }
 
-  identity p-bit {
-    base adj-sid-bit;
+  identity p-flag {
+    base adj-sid-flag;
     description
       "Persistent flag.";
   }
@@ -219,11 +219,20 @@ module ietf-ospf-sr-mpls {
       description
         "Used to advertise the SID/Label associated with a
          prefix or adjacency.";
+      leaf length {
+        type uint16;
+        description
+          "Length of the SID value. YANG model specification
+           is necessary since it dictates the semantics of the
+           SID.";
+      }
       leaf sid {
         type uint32;
         description
           "Segment Identifier (SID) - A 20 bit label or
-           32 bit SID.";
+           32 bit SID. If the length is set to 3, then the
+           20 rightmost bits represent a label.  If the length
+           is set to 4, then the value represents a 32-bit SID.";
       }
     }
   }
@@ -241,12 +250,12 @@ module ietf-ospf-sr-mpls {
         description
           "Prefix SID sub-TLV.";
         container prefix-sid-flags {
-          leaf-list bits {
+          leaf-list flags {
             type identityref {
-              base prefix-sid-bit;
+              base prefix-sid-flag;
             }
             description
-              "Prefix SID Sub-TLV bits.";
+              "Prefix SID Sub-TLV flags.";
           }
           description
             "Segment Identifier (SID) Flags.";
@@ -266,7 +275,18 @@ module ietf-ospf-sr-mpls {
         leaf sid {
           type uint32;
           description
-            "Index or label.";
+            "Segment Identifier (SID) - A 20 bit label or
+             an index into the SID/Label space.
+            
+             If the  V-Flag is set to 0 and L-Flag is set to 0:
+             The SID/Index/Label field is a 4-octet index defining
+             the offset in the SID/Label space advertised by this
+             router.
+
+             If V-Flag is set to 1 and L-Flag is set to 1: The
+             SID/Index/Label field is a 3-octet local label where
+             the 20 rightmost bits are used for encoding the label
+             value.";
         }
       }
     }
@@ -301,12 +321,12 @@ module ietf-ospf-sr-mpls {
              advertisement.";
         }
         container extended-prefix-range-flags {
-          leaf-list bits {
+          leaf-list flags {
             type identityref {
-              base extended-prefix-range-bit;
+              base extended-prefix-range-flag;
             }
             description
-              "Extended prefix range TLV bits.";
+              "Extended prefix range TLV flags.";
           }
           description
             "Extended Prefix Range TLV flags.";
@@ -423,12 +443,12 @@ module ietf-ospf-sr-mpls {
         description
           "Prefix SID sub-TLV.";
         container ospfv3-prefix-sid-flags {
-          leaf-list bits {
+          leaf-list flags {
             type identityref {
-              base prefix-sid-bit;
+              base prefix-sid-flag;
             }
             description
-              "Prefix SID sub-TLV bits.";
+              "Prefix SID sub-TLV flags.";
           }
           description
             "Segment Identifier (SID) Flags.";
@@ -443,7 +463,18 @@ module ietf-ospf-sr-mpls {
         leaf sid {
           type uint32;
           description
-            "Index or label.";
+            "Segment Identifier (SID) - A 20 bit label or
+             an index into the SID/Label space.
+            
+             If the  V-Flag is set to 0 and L-Flag is set to 0:
+             The SID/Index/Label field is a 4-octet index defining
+             the offset in the SID/Label space advertised by this
+             router.
+
+             If V-Flag is set to 1 and L-Flag is set to 1: The
+             SID/Index/Label field is a 3-octet local label where
+             the 20 rightmost bits are used for encoding the label
+             value.";
         }
       }
     }
@@ -501,12 +532,12 @@ module ietf-ospf-sr-mpls {
         description
           "List of Adj-SID sub-TLVs.";
         container adj-sid-flags {
-          leaf-list bits {
+          leaf-list flags {
             type identityref {
-              base adj-sid-bit;
+              base adj-sid-flag;
             }
             description
-              "Adj-SID sub-tlv bits.";
+              "Adj-SID sub-tlv flags.";
           }
           description
             "Adj-sid sub-tlv flags.";
@@ -519,7 +550,18 @@ module ietf-ospf-sr-mpls {
         leaf sid {
           type uint32;
           description
-            "Segment Identifier (SID) index/label.";
+            "Segment Identifier (SID) - A 20 bit label or
+             an index into the SID/Label space.
+            
+             If the  V-Flag is set to 0 and L-Flag is set to 0:
+             The SID/Index/Label field is a 4-octet index defining
+             the offset in the SID/Label space advertised by this
+             router.
+
+             If V-Flag is set to 1 and L-Flag is set to 1: The
+             SID/Index/Label field is a 3-octet local label where
+             the 20 rightmost bits are used for encoding the label
+             value.";
         }
       }
     }
@@ -538,12 +580,12 @@ module ietf-ospf-sr-mpls {
         description
           "List of LAN Adj-SID sub-TLVs.";
         container lan-adj-sid-flags {
-          leaf-list bits {
+          leaf-list flags {
             type identityref {
-              base adj-sid-bit;
+              base adj-sid-flag;
             }
             description
-              "LAN Adj-SID sub-TLV bits.";
+              "LAN Adj-SID sub-TLV flags.";
           }
           description
             "LAN Adj-SID sub-TLV flags.";
@@ -561,7 +603,18 @@ module ietf-ospf-sr-mpls {
         leaf sid {
           type uint32;
           description
-            "Segment Identifier (SID) index/label.";
+            "Segment Identifier (SID) - A 20 bit label or
+             an index into the SID/Label space.
+            
+             If the  V-Flag is set to 0 and L-Flag is set to 0:
+             The SID/Index/Label field is a 4-octet index defining
+             the offset in the SID/Label space advertised by this
+             router.
+
+             If V-Flag is set to 1 and L-Flag is set to 1: The
+             SID/Index/Label field is a 3-octet local label where
+             the 20 rightmost bits are used for encoding the label
+             value.";
         }
       }
     }
@@ -840,12 +893,12 @@ module ietf-ospf-sr-mpls {
         description
           "List of Adj-SID sub-TLVs.";
         container adj-sid-flags {
-          leaf-list bits {
+          leaf-list flags {
             type identityref {
-              base adj-sid-bit;
+              base adj-sid-flag;
             }
             description
-              "Adj-SID sub-TLV bits.";
+              "Adj-SID sub-TLV flags.";
           }
           description
             "Adj-sid sub-TLV flags.";
@@ -863,7 +916,18 @@ module ietf-ospf-sr-mpls {
         leaf sid {
           type uint32;
           description
-            "Segment Identifier (SID) index/label.";
+            "Segment Identifier (SID) - A 20 bit label or
+             an index into the SID/Label space.
+            
+             If the  V-Flag is set to 0 and L-Flag is set to 0:
+             The SID/Index/Label field is a 4-octet index defining
+             the offset in the SID/Label space advertised by this
+             router.
+
+             If V-Flag is set to 1 and L-Flag is set to 1: The
+             SID/Index/Label field is a 3-octet local label where
+             the 20 rightmost bits are used for encoding the label
+             value.";
         }
       }
     }
@@ -874,12 +938,12 @@ module ietf-ospf-sr-mpls {
         description
           "List of LAN Adj-SID sub-TLVs.";
         container lan-adj-sid-flags {
-          leaf-list bits {
+          leaf-list flags {
             type identityref {
-              base adj-sid-bit;
+              base adj-sid-flag;
             }
             description
-              "LAN Adj-SID sub-TLV bits.";
+              "LAN Adj-SID sub-TLV flags.";
           }
           description
             "LAN Adj-SID sub-TLV flags.";
@@ -902,7 +966,18 @@ module ietf-ospf-sr-mpls {
         leaf sid {
           type uint32;
           description
-            "Segment Identifier (SID) index/label.";
+            "Segment Identifier (SID) - A 20 bit label or
+             an index into the SID/Label space.
+            
+             If the  V-Flag is set to 0 and L-Flag is set to 0:
+             The SID/Index/Label field is a 4-octet index defining
+             the offset in the SID/Label space advertised by this
+             router.
+
+             If V-Flag is set to 1 and L-Flag is set to 1: The
+             SID/Index/Label field is a 3-octet local label where
+             the 20 rightmost bits are used for encoding the label
+             value.";
         }
       }
     }
