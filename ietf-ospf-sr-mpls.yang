@@ -312,9 +312,9 @@ module ietf-ospf-sr-mpls {
             "Extended Prefix Range TLV flags.";
         }
         leaf prefix {
-          type inet:ip-prefix;
+          type inet:ipv4-prefix;
           description
-            "Address prefix.";
+            "IPv4 prefix.";
         }
         uses ospfv2-prefix-sid-sub-tlvs;
         uses ospf:unknown-tlvs;
@@ -478,9 +478,9 @@ module ietf-ospf-sr-mpls {
              advertisement.";
         }
         leaf prefix {
-          type inet:ip-prefix;
+          type inet:ipv4-prefix;
           description
-            "Address prefix.";
+            "IPv4 prefix.";
         }
         uses ospfv3-prefix-sid-sub-tlvs;
         uses ospf:unknown-tlvs;
