@@ -93,7 +93,7 @@ module ietf-ospf-sr-mpls {
   reference
     "RFC XXXX";
 
-  revision 2023-12-30 {
+  revision 2024-01-08 {
     description
       "Initial revision.";
     reference
@@ -263,7 +263,10 @@ module ietf-ospf-sr-mpls {
         leaf mt-id {
           type uint8;
           description
-            "Multi-topology ID.";
+            "Multi-topology ID. Topologies range from 0-127 and
+             return of any other value would indicate an error.";
+          reference
+            "RFC 4915 - Multi-Topology (MT) Routing in OSPF";
         }
         leaf algorithm {
           type identityref {
@@ -277,7 +280,7 @@ module ietf-ospf-sr-mpls {
           description
             "Segment Identifier (SID) - A 20 bit label or
              an index into the SID/Label space.
-            
+
              If the  V-Flag is set to 0 and L-Flag is set to 0:
              The SID/Index/Label field is a 4-octet index defining
              the offset in the SID/Label space advertised by this
@@ -400,7 +403,8 @@ module ietf-ospf-sr-mpls {
         leaf range-size {
           type rt-types:uint24;
           description
-            "SID range.";
+            "SID range. The return of a zero value would indicate
+             an error.";
         }
         uses sid-sub-tlv;
       }
@@ -465,7 +469,7 @@ module ietf-ospf-sr-mpls {
           description
             "Segment Identifier (SID) - A 20 bit label or
              an index into the SID/Label space.
-            
+
              If the  V-Flag is set to 0 and L-Flag is set to 0:
              The SID/Index/Label field is a 4-octet index defining
              the offset in the SID/Label space advertised by this
@@ -505,8 +509,8 @@ module ietf-ospf-sr-mpls {
         leaf range-size {
           type uint16;
           description
-            "Number of prefixes covered by the
-             advertisement.";
+            "Number of prefixes covered by the advertisement.
+             The return of zero would indicate an error.";
         }
         leaf prefix {
           type inet:ipv4-prefix;
@@ -552,7 +556,7 @@ module ietf-ospf-sr-mpls {
           description
             "Segment Identifier (SID) - A 20 bit label or
              an index into the SID/Label space.
-            
+
              If the  V-Flag is set to 0 and L-Flag is set to 0:
              The SID/Index/Label field is a 4-octet index defining
              the offset in the SID/Label space advertised by this
@@ -605,7 +609,7 @@ module ietf-ospf-sr-mpls {
           description
             "Segment Identifier (SID) - A 20 bit label or
              an index into the SID/Label space.
-            
+
              If the  V-Flag is set to 0 and L-Flag is set to 0:
              The SID/Index/Label field is a 4-octet index defining
              the offset in the SID/Label space advertised by this
@@ -668,7 +672,7 @@ module ietf-ospf-sr-mpls {
           description
             "Neighbor's Router ID, IPv4 address, or IPv6 address.";
         }
-      }    
+      }
     }
   }
 
@@ -906,7 +910,10 @@ module ietf-ospf-sr-mpls {
         leaf mt-id {
           type uint8;
           description
-            "Multi-topology ID.";
+            "Multi-topology ID. Topologies range from 0-127 and
+             return of any other value would indicate an error.";
+          reference
+            "RFC 4915 - Multi-Topology (MT) Routing in OSPF";
         }
         leaf weight {
           type uint8;
@@ -918,7 +925,7 @@ module ietf-ospf-sr-mpls {
           description
             "Segment Identifier (SID) - A 20 bit label or
              an index into the SID/Label space.
-            
+
              If the  V-Flag is set to 0 and L-Flag is set to 0:
              The SID/Index/Label field is a 4-octet index defining
              the offset in the SID/Label space advertised by this
@@ -951,7 +958,10 @@ module ietf-ospf-sr-mpls {
         leaf mt-id {
           type uint8;
           description
-            "Multi-topology ID.";
+            "Multi-topology ID. Topologies range from 0-127 and
+             return of any other value would indicate an error.";
+          reference
+            "RFC 4915 - Multi-Topology (MT) Routing in OSPF";
         }
         leaf weight {
           type uint8;
@@ -968,7 +978,7 @@ module ietf-ospf-sr-mpls {
           description
             "Segment Identifier (SID) - A 20 bit label or
              an index into the SID/Label space.
-            
+
              If the  V-Flag is set to 0 and L-Flag is set to 0:
              The SID/Index/Label field is a 4-octet index defining
              the offset in the SID/Label space advertised by this
