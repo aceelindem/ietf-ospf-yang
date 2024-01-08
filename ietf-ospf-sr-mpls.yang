@@ -513,9 +513,9 @@ module ietf-ospf-sr-mpls {
              The return of zero would indicate an error.";
         }
         leaf prefix {
-          type inet:ipv4-prefix;
+          type inet:ip-prefix;
           description
-            "IPv4 prefix.";
+            "IPv4 or IPv6 prefix.";
         }
         uses ospfv3-prefix-sid-sub-tlvs;
         uses ospf:unknown-tlvs;

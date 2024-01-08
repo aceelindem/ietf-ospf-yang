@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-27"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-28"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing for the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-27"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-28"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -128,9 +128,13 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
     </t>
     <section numbered="true" toc="default">
       <name>Requirements Language</name>
-      <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-      "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-      document are to be interpreted as described in <xref target="RFC2119" format="default"/>.</t>
+      <t>
+        The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+        NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+        "MAY", and "OPTIONAL" in this document are to be interpreted as
+        described in BCP 14 <xref target="RFC2119" format="default"/> <xref target="RFC8174" format="default"/>
+        when, and only when, they appear in all capitals, as shown here.
+     </t>
     </section>
     <section numbered="true" toc="default">
       <name>Tree Diagrams</name>
@@ -482,7 +486,7 @@ module: ietf-ospf-sr-mpls
           +--ro prefix-length?         uint8
           +--ro af?                    uint8
           +--ro range-size?            uint16
-          +--ro prefix?                inet:ipv4-prefix
+          +--ro prefix?                inet:ip-prefix
           +--ro prefix-sid-sub-tlvs
           |  +--ro prefix-sid-sub-tlv* []
           |     +--ro ospfv3-prefix-sid-flags
@@ -505,7 +509,7 @@ module: ietf-ospf-sr-mpls
           +--ro prefix-length?         uint8
           +--ro af?                    uint8
           +--ro range-size?            uint16
-          +--ro prefix?                inet:ipv4-prefix
+          +--ro prefix?                inet:ip-prefix
           +--ro prefix-sid-sub-tlvs
           |  +--ro prefix-sid-sub-tlv* []
           |     +--ro ospfv3-prefix-sid-flags
@@ -527,7 +531,7 @@ module: ietf-ospf-sr-mpls
           +--ro prefix-length?         uint8
           +--ro af?                    uint8
           +--ro range-size?            uint16
-          +--ro prefix?                inet:ipv4-prefix
+          +--ro prefix?                inet:ip-prefix
           +--ro prefix-sid-sub-tlvs
           |  +--ro prefix-sid-sub-tlv* []
           |     +--ro ospfv3-prefix-sid-flags
@@ -550,7 +554,7 @@ module: ietf-ospf-sr-mpls
           +--ro prefix-length?         uint8
           +--ro af?                    uint8
           +--ro range-size?            uint16
-          +--ro prefix?                inet:ipv4-prefix
+          +--ro prefix?                inet:ip-prefix
           +--ro prefix-sid-sub-tlvs
           |  +--ro prefix-sid-sub-tlv* []
           |     +--ro ospfv3-prefix-sid-flags
@@ -650,7 +654,6 @@ module: ietf-ospf-sr-mpls
           +--ro weight?               uint8
           +--ro neighbor-router-id?   rt-types:router-id
           +--ro sid?                  uint32
-
 ]]></artwork>
 <section numbered="true" toc="default">
   <name>OSPF Segment Routing YANG Module</name>
@@ -1181,9 +1184,9 @@ module ietf-ospf-sr-mpls {
              The return of zero would indicate an error.";
         }
         leaf prefix {
-          type inet:ipv4-prefix;
+          type inet:ip-prefix;
           description
-            "IPv4 prefix.";
+            "IPv4 or IPv6 prefix.";
         }
         uses ospfv3-prefix-sid-sub-tlvs;
         uses ospf:unknown-tlvs;
@@ -2118,6 +2121,7 @@ filing system or remote ones accessed by http (http://domain/dir/... ).-->
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7950.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8040.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8102.xml"/>
+        <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8294.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8341.xml"/>
         <xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8343.xml"/>
