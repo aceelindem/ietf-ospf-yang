@@ -13,6 +13,11 @@ module ietf-ospf-sr-mpls {
     reference
       "RFC 8294 - Common YANG Data Types for the Routing Area";
   }
+  import iana-routing-types {
+    prefix iana-rt-types;
+    reference
+      "RFC 8294 - Common YANG Data Types for the Routing Area";
+  }
   import ietf-routing {
     prefix rt;
     reference
@@ -93,7 +98,7 @@ module ietf-ospf-sr-mpls {
   reference
     "RFC XXXX";
 
-  revision 2024-01-08 {
+  revision 2024-01-17 {
     description
       "Initial revision.";
     reference
@@ -242,7 +247,7 @@ module ietf-ospf-sr-mpls {
       "Prefix Segment ID (SID) sub-TLVs.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing
-        (Section 6)";
+        (Section 5)";
     container prefix-sid-sub-tlvs {
       description
         "Prefix SID sub-TLV.";
@@ -313,7 +318,7 @@ module ietf-ospf-sr-mpls {
             "Length of prefix in bits.";
         }
         leaf af {
-          type uint8;
+          type iana-rt-types:address-family;
           description
             "Address family for the prefix.";
         }
@@ -429,7 +434,7 @@ module ietf-ospf-sr-mpls {
         type uint8;
         description
           "SRMS preference TLV, value from 0 to 255 with
-           with 255 being the most preferred.";
+           255 being the most preferred.";
       }
     }
   }
@@ -502,7 +507,7 @@ module ietf-ospf-sr-mpls {
             "Length of prefix in bits.";
         }
         leaf af {
-          type uint8;
+          type iana-rt-types:address-family;
           description
             "Address family for the prefix.";
         }
@@ -510,7 +515,7 @@ module ietf-ospf-sr-mpls {
           type uint16;
           description
             "Number of prefixes covered by the advertisement.
-             The return of zero would indicate an error.";
+             The return of a value of zero would indicate an error.";
         }
         leaf prefix {
           type inet:ip-prefix;
@@ -670,7 +675,9 @@ module ietf-ospf-sr-mpls {
         leaf neighbor-id {
           type inet:ip-address;
           description
-            "Neighbor's Router ID, IPv4 address, or IPv6 address.";
+            "Neighbor's Router ID, IPv4 address, or IPv6 address.
+             Specification is optional and, if specified, SHOULD
+             specify a neighorr reachable via the interface.";
         }
       }
     }
@@ -689,15 +696,16 @@ module ietf-ospf-sr-mpls {
       "This augments the OSPF protocol IP-FRR with TI-LFA.";
     container ti-lfa {
       if-feature "ti-lfa";
-      leaf enable {
+      leaf enabled {
         type boolean;
+        default "false";
         description
           "Enable TI-LFA computation.";
       }
       container selection-tie-breakers {
         container node-protection {
           presence "Presence of container enables the node
-                    protection tie-breaker";
+                    protection tie-breaker.";
           leaf priority {
             type uint8;
             default "128";
@@ -730,11 +738,16 @@ module ietf-ospf-sr-mpls {
         }
         description
           "Configure path selection tie-breakers and their
-           respective priorities for the TI-LFA computation.";
+           respective priorities for the TI-LFA computation.
+           multiple tie-breakers and priorities configured may
+           be configured.";
       }
       description
         "Topology-Independent Loop Free Alternate
          (TI-LFA) support.";
+      reference
+        "draft-ietf-rtgwg-segment-routing-ti-lfa -
+         Topology-Independent Fast Reroute using Segment Routing";
     }
   }
 

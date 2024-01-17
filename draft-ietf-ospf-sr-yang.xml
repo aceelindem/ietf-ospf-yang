@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-28"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-29"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing for the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-28"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-29"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -155,7 +155,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
       routing module <xref target="RFC9020" format="default"/>,
       which defines the global segment routing configuration independent
       of any specific routing protocol configuration, and support of OSPF base
-      model<xref target="RFC9129" format="default"/> which defines basic
+      model <xref target="RFC9129" format="default"/> which defines basic
       OSPF configuration and state.
     </t>
     <artwork align="left" name="" type="" alt=""><![CDATA[
@@ -192,7 +192,7 @@ module: ietf-ospf-sr-mpls
             /ospf:area/ospf:interfaces/ospf:interface
             /ospf:fast-reroute/ospf:lfa:
     +--rw ti-lfa {ti-lfa}?
-       +--rw enable?                   boolean
+       +--rw enabled?                  boolean
        +--rw selection-tie-breakers
           +--rw node-protection!
           |  +--rw priority?   uint8
@@ -213,7 +213,8 @@ module: ietf-ospf-sr-mpls
     +--ro extended-prefix-range-tlvs
        +--ro extended-prefix-range-tlv* []
           +--ro prefix-length?                 uint8
-          +--ro af?                            uint8
+          +--ro af?
+          |       iana-rt-types:address-family
           +--ro range-size?                    uint16
           +--ro extended-prefix-range-flags
           |  +--ro flags*   identityref
@@ -239,7 +240,8 @@ module: ietf-ospf-sr-mpls
     +--ro extended-prefix-range-tlvs
        +--ro extended-prefix-range-tlv* []
           +--ro prefix-length?                 uint8
-          +--ro af?                            uint8
+          +--ro af?
+          |       iana-rt-types:address-family
           +--ro range-size?                    uint16
           +--ro extended-prefix-range-flags
           |  +--ro flags*   identityref
@@ -265,7 +267,8 @@ module: ietf-ospf-sr-mpls
     +--ro extended-prefix-range-tlvs
        +--ro extended-prefix-range-tlv* []
           +--ro prefix-length?                 uint8
-          +--ro af?                            uint8
+          +--ro af?
+          |       iana-rt-types:address-family
           +--ro range-size?                    uint16
           +--ro extended-prefix-range-flags
           |  +--ro flags*   identityref
@@ -484,7 +487,8 @@ module: ietf-ospf-sr-mpls
     +--ro ospfv3-extended-prefix-range-tlvs
        +--ro extended-prefix-range-tlv* []
           +--ro prefix-length?         uint8
-          +--ro af?                    uint8
+          +--ro af?
+          |       iana-rt-types:address-family
           +--ro range-size?            uint16
           +--ro prefix?                inet:ip-prefix
           +--ro prefix-sid-sub-tlvs
@@ -507,7 +511,8 @@ module: ietf-ospf-sr-mpls
     +--ro ospfv3-extended-prefix-range-tlvs
        +--ro extended-prefix-range-tlv* []
           +--ro prefix-length?         uint8
-          +--ro af?                    uint8
+          +--ro af?
+          |       iana-rt-types:address-family
           +--ro range-size?            uint16
           +--ro prefix?                inet:ip-prefix
           +--ro prefix-sid-sub-tlvs
@@ -529,7 +534,8 @@ module: ietf-ospf-sr-mpls
     +--ro ospfv3-extended-prefix-range-tlvs
        +--ro extended-prefix-range-tlv* []
           +--ro prefix-length?         uint8
-          +--ro af?                    uint8
+          +--ro af?
+          |       iana-rt-types:address-family
           +--ro range-size?            uint16
           +--ro prefix?                inet:ip-prefix
           +--ro prefix-sid-sub-tlvs
@@ -552,7 +558,8 @@ module: ietf-ospf-sr-mpls
     +--ro ospfv3-extended-prefix-range-tlvs
        +--ro extended-prefix-range-tlv* []
           +--ro prefix-length?         uint8
-          +--ro af?                    uint8
+          +--ro af?
+          |       iana-rt-types:address-family
           +--ro range-size?            uint16
           +--ro prefix?                inet:ip-prefix
           +--ro prefix-sid-sub-tlvs
@@ -654,7 +661,9 @@ module: ietf-ospf-sr-mpls
           +--ro weight?               uint8
           +--ro neighbor-router-id?   rt-types:router-id
           +--ro sid?                  uint32
-]]></artwork>
+
+    ]]></artwork>
+    
 <section numbered="true" toc="default">
   <name>OSPF Segment Routing YANG Module</name>
   <t>
@@ -668,7 +677,7 @@ module: ietf-ospf-sr-mpls
   </t>
   <figure>
     <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-sr-mpls@2024-01-08.yang"
+<CODE BEGINS> file "ietf-ospf-sr-mpls@2024-01-17.yang"
 module ietf-ospf-sr-mpls {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr-mpls";
@@ -681,6 +690,11 @@ module ietf-ospf-sr-mpls {
   }
   import ietf-routing-types {
     prefix rt-types;
+    reference
+      "RFC 8294 - Common YANG Data Types for the Routing Area";
+  }
+  import iana-routing-types {
+    prefix iana-rt-types;
     reference
       "RFC 8294 - Common YANG Data Types for the Routing Area";
   }
@@ -764,7 +778,7 @@ module ietf-ospf-sr-mpls {
   reference
     "RFC XXXX";
 
-  revision 2024-01-08 {
+  revision 2024-01-17 {
     description
       "Initial revision.";
     reference
@@ -913,7 +927,7 @@ module ietf-ospf-sr-mpls {
       "Prefix Segment ID (SID) sub-TLVs.";
     reference
       "RFC 8665: OSPF Extensions for Segment Routing
-        (Section 6)";
+        (Section 5)";
     container prefix-sid-sub-tlvs {
       description
         "Prefix SID sub-TLV.";
@@ -984,7 +998,7 @@ module ietf-ospf-sr-mpls {
             "Length of prefix in bits.";
         }
         leaf af {
-          type uint8;
+          type iana-rt-types:address-family;
           description
             "Address family for the prefix.";
         }
@@ -1100,7 +1114,7 @@ module ietf-ospf-sr-mpls {
         type uint8;
         description
           "SRMS preference TLV, value from 0 to 255 with
-           with 255 being the most preferred.";
+           255 being the most preferred.";
       }
     }
   }
@@ -1173,7 +1187,7 @@ module ietf-ospf-sr-mpls {
             "Length of prefix in bits.";
         }
         leaf af {
-          type uint8;
+          type iana-rt-types:address-family;
           description
             "Address family for the prefix.";
         }
@@ -1181,7 +1195,7 @@ module ietf-ospf-sr-mpls {
           type uint16;
           description
             "Number of prefixes covered by the advertisement.
-             The return of zero would indicate an error.";
+             The return of a value of zero would indicate an error.";
         }
         leaf prefix {
           type inet:ip-prefix;
@@ -1341,7 +1355,9 @@ module ietf-ospf-sr-mpls {
         leaf neighbor-id {
           type inet:ip-address;
           description
-            "Neighbor's Router ID, IPv4 address, or IPv6 address.";
+            "Neighbor's Router ID, IPv4 address, or IPv6 address.
+             Specification is optional and, if specified, SHOULD
+             specify a neighorr reachable via the interface.";
         }
       }
     }
@@ -1360,15 +1376,16 @@ module ietf-ospf-sr-mpls {
       "This augments the OSPF protocol IP-FRR with TI-LFA.";
     container ti-lfa {
       if-feature "ti-lfa";
-      leaf enable {
+      leaf enabled {
         type boolean;
+        default "false";
         description
           "Enable TI-LFA computation.";
       }
       container selection-tie-breakers {
         container node-protection {
           presence "Presence of container enables the node
-                    protection tie-breaker";
+                    protection tie-breaker.";
           leaf priority {
             type uint8;
             default "128";
@@ -1401,11 +1418,16 @@ module ietf-ospf-sr-mpls {
         }
         description
           "Configure path selection tie-breakers and their
-           respective priorities for the TI-LFA computation.";
+           respective priorities for the TI-LFA computation.
+           multiple tie-breakers and priorities configured may
+           be configured.";
       }
       description
         "Topology-Independent Loop Free Alternate
          (TI-LFA) support.";
+      reference
+        "draft-ietf-rtgwg-segment-routing-ti-lfa -
+         Topology-Independent Fast Reroute using Segment Routing";
     }
   }
 
