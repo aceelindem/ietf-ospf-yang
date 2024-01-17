@@ -677,7 +677,7 @@ module ietf-ospf-sr-mpls {
           description
             "Neighbor's Router ID, IPv4 address, or IPv6 address.
              Specification is optional and, if specified, SHOULD
-             specify a neighorr reachable via the interface.";
+             specify a neighbor reachable via the interface.";
         }
       }
     }
