@@ -98,7 +98,7 @@ module ietf-ospf-sr-mpls {
   reference
     "RFC XXXX";
 
-  revision 2024-01-17 {
+  revision 2024-01-18 {
     description
       "Initial revision.";
     reference
@@ -640,7 +640,7 @@ module ietf-ospf-sr-mpls {
     }
     description
       "This augments the OSPF protocol configuration
-       with segment routing.";
+       with segment routing for the MPLS data plane.";
     uses sr-mpls:sr-control-plane;
     container protocol-srgb {
       if-feature "sr-mpls:protocol-srgb";
@@ -674,6 +674,7 @@ module ietf-ospf-sr-mpls {
           "This augments LAN interface adj-sid with neighbor-id.";
         leaf neighbor-id {
           type inet:ip-address;
+          mandatory true;
           description
             "Neighbor's Router ID, IPv4 address, or IPv6 address.
              Specification is optional and, if specified, SHOULD
