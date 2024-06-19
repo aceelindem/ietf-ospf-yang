@@ -42,7 +42,7 @@ module ietf-ospf-sr-mpls {
   import ietf-ospfv3-extended-lsa {
     prefix ospfv3-e-lsa;
     reference
-      "RFC XXXX - YANG Data Model for OSPFv3 Extended LSAs";
+      "RFC 9587 - YANG Data Model for OSPFv3 Extended LSAs";
   }
 
   organization
