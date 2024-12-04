@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-31"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-32"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing for the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-31"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-32"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -2009,7 +2009,6 @@ module ietf-ospf-sr-mpls {
 </figure>
 </section>
 </section>
-    <!-- Possibly a 'Contributors' section ... -->
 
     <section anchor="Security" numbered="true" toc="default">
       <name>Security Considerations</name>
@@ -2078,10 +2077,16 @@ module ietf-ospf-sr-mpls {
     </section>
     <section anchor="Acknowledgements" numbered="true" toc="default">
       <name>Acknowledgements</name>
-      <t>The authors wish to thank Yi Yang, Alexander Clemm,
-      Gaurav Gupta, Ladislav Lhotka, Stephane Litkowski,
-      Greg Hankins, Manish Gupta, Alan Davey, Divakaran Baskaran, Reshad Rahman, and Tom Petch for their thorough reviews
-      and helpful comments.</t>
+      <t>
+        The authors wish to thank Dean Bogdanovic and Kiran Koushik Agrahara Sreenivasa
+        for their YANG model discussions.
+      </t>
+      <t>
+        The authors wish to thank Yi Yang, Alexander Clemm,
+        Gaurav Gupta, Ladislav Lhotka, Stephane Litkowski,
+        Greg Hankins, Manish Gupta, Alan Davey, Divakaran Baskaran, Reshad Rahman, and Tom Petch for
+        their thorough reviews and helpful comments.
+      </t>
       <t>
         The authors wish to thank Julien Meuric for a very meticulous Routing Directorate review.
       </t>
@@ -2264,26 +2269,6 @@ filing system or remote ones accessed by http (http://domain/dir/... ).-->
   }
 }
   ]]></artwork>
-
-    </section>
-    <section numbered="true" toc="default">
-      <name>Contributors' Addreses</name>
-      <artwork name="" type="" align="left" alt=""><![CDATA[
-
-Dean Bogdanovic
-Alef
-
-EMail: ivandean@gmail.com
-
-
-Kiran Koushik Agrahara Sreenivasa
-Verizon Wireless
-Austin, TX  78681
-USA
-
-EMail: KiranKoushik.AgraharaSreenivasa@verisonwireless.com
-
-   ]]></artwork>
     </section>
   </back>
 </rfc>
