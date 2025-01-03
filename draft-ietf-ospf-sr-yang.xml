@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-32"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-33"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing for the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-32"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-33"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -185,7 +185,7 @@ module: ietf-ospf-sr-mpls
           |  +--rw weight?        uint8
           |  +--rw neighbor-id    inet:ip-address
           +--rw advertise-adj-group-sid* [group-id]
-          |  +--rw group-id    uint32
+          |  +--rw group-id       uint32
           +--rw advertise-protection?      enumeration
   augment /rt:routing/rt:control-plane-protocols
             /rt:control-plane-protocol/ospf:ospf/ospf:areas
@@ -664,7 +664,7 @@ module: ietf-ospf-sr-mpls
           +--ro neighbor-router-id?   rt-types:router-id
           +--ro sid?                  uint32
     ]]></artwork>
-    
+
 <section numbered="true" toc="default">
   <name>OSPF Segment Routing YANG Module</name>
   <t>
@@ -678,7 +678,7 @@ module: ietf-ospf-sr-mpls
   </t>
   <figure>
     <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-sr-mpls@2024-06-19.yang"
+<CODE BEGINS> file "ietf-ospf-sr-mpls@2025-01-03.yang"
 module ietf-ospf-sr-mpls {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr-mpls";
@@ -753,7 +753,7 @@ module ietf-ospf-sr-mpls {
      This YANG model conforms to the Network Management
      Datastore Architecture (NMDA) as described in RFC 8342.
 
-     Copyright (c) 2023 IETF Trust and the persons identified as
+     Copyright (c) 2025 IETF Trust and the persons identified as
      authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -779,7 +779,7 @@ module ietf-ospf-sr-mpls {
   reference
     "RFC XXXX";
 
-  revision 2024-06-19 {
+  revision 2025-01-03 {
     description
       "Initial revision.";
     reference
@@ -1412,8 +1412,8 @@ module ietf-ospf-sr-mpls {
                a lower priority being more preferred.";
           }
           description
-            "Enable SRLG (Shared Resource Link Group)
-             disjoint  as a TI-LFA path selection tie-breaker.
+            "Enable SRLG (Sharsed Resource Link Group)
+             disjoint as a TI-LFA path selection tie-breaker.
              A path providing node a disjoint path for SRLG
              links from the primary path will be selected over
              one that doesn't provide an SRLG disjoint path.";
