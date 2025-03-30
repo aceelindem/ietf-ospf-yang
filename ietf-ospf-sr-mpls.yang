@@ -94,7 +94,7 @@ module ietf-ospf-sr-mpls {
    reference
     "RFC XXXX";
 
-  revision 2025-03-28 {
+  revision 2025-03-30 {
     description
       "Initial revision.";
     reference
@@ -122,90 +122,123 @@ module ietf-ospf-sr-mpls {
     description
       "Base identity for prefix SID sub-TLV flags.";
     reference
-      "RFC 8665: OSPF Extensions for Segment Routing
-       RFC 8666: OSPFv3 Extensions for Segment Routing";
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 5
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 6";
   }
 
   identity np-flag {
     base prefix-sid-flag;
     description
       "No-PHP flag.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 5
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 6";
   }
 
   identity m-flag {
     base prefix-sid-flag;
     description
       "Mapping server flag.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 5
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 6";
   }
 
   identity e-flag {
     base prefix-sid-flag;
     description
       "Explicit-NULL flag.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 5
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 6";
   }
 
   identity v-flag {
     base prefix-sid-flag;
     description
       "Value/Index flag.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 5
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 6";
   }
 
   identity l-flag {
     base prefix-sid-flag;
     description
       "Local flag.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 5
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 6";
   }
 
   identity extended-prefix-range-flag {
     description
       "Base identity for extended prefix range TLV flags.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 4
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 5";
   }
 
   identity ia-flag {
     base extended-prefix-range-flag;
     description
-      "Inter-Area flag. If set, advertisement is of
-       inter-area type.";
+      "Inter-Area flag.";
     reference
-      "RFC 8665: OSPF Extensions for Segment Routing";
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 4
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 5";
   }
 
   identity adj-sid-flag {
     description
       "Base identity for Adj-SID sub-TLV flags.";
     reference
-      "RFC 8665: OSPF Extensions for Segment Routing
-       RFC 8666: OSPFv3 Extensions for Segment Routing";
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 6
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 7";
   }
 
   identity b-flag {
     base adj-sid-flag;
     description
       "Backup flag.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 6
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 7";
   }
 
   identity vi-flag {
     base adj-sid-flag;
     description
-      "Value/Index flag.";
+      "Value/Index flag - corresponds to V-Flag in references.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 6
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 7";
   }
 
-  identity lo-flag {
+  identity lg-flag {
     base adj-sid-flag;
     description
-      "Local/Global flag.";
+      "Local/Global flag - corresponds to L-flag in references.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 6
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 7";
   }
 
   identity g-flag {
     base adj-sid-flag;
     description
       "Group flag.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 6
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 7";
   }
 
   identity p-flag {
     base adj-sid-flag;
     description
       "Persistent flag.";
+    reference
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 6
+      RFC 8666: OSPFv3 Extensions for Segment Routing, Section 7";
   }
 
   /* Groupings */
@@ -254,7 +287,7 @@ module ietf-ospf-sr-mpls {
         "Choice of either a 20-bit MPLS lable or 32-bit offset into
          an advertised label space.";
     }
-}
+  }
 
 
   grouping sid-sub-tlv {
@@ -302,7 +335,9 @@ module ietf-ospf-sr-mpls {
             "Segment Identifier (SID) Flags.";
         }
         leaf mt-id {
-          type uint8;
+          type uint8 {
+              range "0 .. 127";
+          }
           description
             "Multi-topology ID. Topologies range from 0-127 and
              return of any other value would indicate an error.";
@@ -631,7 +666,7 @@ module ietf-ospf-sr-mpls {
       description
         "Per-protocol SRGB.";
     }
-}
+ }
 
   augment "/rt:routing/rt:control-plane-protocols/"
         + "rt:control-plane-protocol/ospf:ospf/"
@@ -703,7 +738,8 @@ module ietf-ospf-sr-mpls {
             default "128";
             description
               "Priority for node protection tie-breaker with
-               a lower priority being more preferred.";
+              a lower priority being more preferred. By default,
+              the priority is in the middle of the priority range.";
           }
           description
             "Enable node protection as a TI-LFA path
@@ -719,7 +755,8 @@ module ietf-ospf-sr-mpls {
             default "128";
             description
               "Priority for SRLG disjoint tie-breaker with
-               a lower priority being more preferred.";
+              a lower priority being more preferred. By default,
+              the priority is in the middle of the priority range.";
           }
           description
             "Enable SRLG (Sharsed Resource Link Group)
@@ -892,7 +929,9 @@ module ietf-ospf-sr-mpls {
             "Adj-SID sub-TLV flags.";
         }
         leaf mt-id {
-          type uint8;
+          type uint8 {
+              range "0 .. 127";
+          }
           description
             "Multi-topology ID. Topologies range from 0-127 and
              return of any other value would indicate an error.";
@@ -928,7 +967,9 @@ module ietf-ospf-sr-mpls {
             "LAN Adj-SID sub-TLV flags.";
         }
         leaf mt-id {
-          type uint8;
+          type uint8 {
+              range "0 .. 127";
+          }
           description
             "Multi-topology ID. Topologies range from 0-127 and
              return of any other value would indicate an error.";
