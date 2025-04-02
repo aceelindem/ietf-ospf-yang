@@ -87,9 +87,8 @@ module ietf-ospf-sr-mpls {
 
       This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
-  reference
-    "RFC XXXX: A YANG Data Model for OSPF Segment Routing over the
-     MPLS Data Plane";
+  // RFC Ed.: Replace XXXX with actual RFC number and remove
+  // this note
 
   revision 2025-04-02 {
     description
@@ -98,6 +97,9 @@ module ietf-ospf-sr-mpls {
       "RFC XXXX: A YANG Data Model for OSPF Segment Routing for
        over MPLS Data Plane";
   }
+  // RFC Ed.: Replace XXXX with actual RFC number.
+  // Also, replace '2025-04-02' with the module publication date
+  // the format is (YYYY-MM-DD) and remove this note.
 
   feature remote-lfa-sr {
     description
