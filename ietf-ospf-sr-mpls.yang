@@ -87,6 +87,7 @@ module ietf-ospf-sr-mpls {
 
       This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
+
   // RFC Ed.: Replace XXXX with actual RFC number and remove
   // this note
 
@@ -97,6 +98,7 @@ module ietf-ospf-sr-mpls {
       "RFC XXXX: A YANG Data Model for OSPF Segment Routing for
        over MPLS Data Plane";
   }
+
   // RFC Ed.: Replace XXXX with actual RFC number.
   // Also, replace '2025-04-02' with the module publication date
   // the format is (YYYY-MM-DD) and remove this note.
@@ -754,12 +756,16 @@ module ietf-ospf-sr-mpls {
         + "rt:control-plane-protocol/ospf:ospf/"
         + "ospf:areas/ospf:area" {
     when "derived-from(/rt:routing/rt:control-plane-protocols/"
-       + "rt:control-plane-protocol/rt:type, 'ospf:ospf')" {
+       + "rt:control-plane-protocol/rt:type, 'ospf:ospf') and "
+       + "/rt:routing/rt:control-plane-protocols"
+       + "/rt:control-plane-protocol/ospf:ospf"
+       + "/ospf-sr-mpls:segment-routing/"
+       + "ospf-sr-mpls:enabled = 'true'" {
       description
-        "This augments the OSPF area configuration
-         when used.";
+        "This augments the OSPF area configuration when segment
+         routing is enabled at the OSPF instance level.";
     }
-    container segment-routing-mpls {
+    container segment-routing {
       presence "When present segment routing over MPLS is enabled
                 for the area.";
       description
@@ -780,7 +786,7 @@ module ietf-ospf-sr-mpls {
        + "rt:control-plane-protocol/rt:type, 'ospf:ospf') and "
        + "/rt:routing/rt:control-plane-protocols/"
        + "rt:control-plane-protocol/ospf:ospf/"
-       + "ospf:areas/ospf:area/ospf-sr-mpls:segment-routing-mpls" {
+       + "ospf:areas/ospf:area/ospf-sr-mpls:segment-routing" {
       description
         "This augments the OSPF interface configuration when used.";
     }
