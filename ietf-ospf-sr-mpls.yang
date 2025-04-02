@@ -65,9 +65,6 @@ module ietf-ospf-sr-mpls {
     "This YANG module defines the generic configuration
      and operational state for OSPF Segment Routing (SR).
 
-     This YANG model conforms to the Network Management
-     Datastore Architecture (NMDA) as described in RFC 8342.
-
      Copyright (c) 2025 IETF Trust and the persons
      identified as authors of the code.  All rights reserved.
 
@@ -86,7 +83,10 @@ module ietf-ospf-sr-mpls {
      NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
      'MAY', and 'OPTIONAL' in this document are to be interpreted as
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
-     they appear in all capitals, as shown here.";
+     they appear in all capitals, as shown here.
+
+      This version of this YANG module is part of RFC XXXX; see
+     the RFC itself for full legal notices.";
   reference
     "RFC XXXX: A YANG Data Model for OSPF Segment Routing over the
      MPLS Data Plane";
@@ -1029,8 +1029,8 @@ module ietf-ospf-sr-mpls {
     reference
       "RFC 8665: OSPF Extensions for Segment Routing
         (Section 6)";
-    uses ospfv3-adj-sid-sub-tlvs;
-    uses ospfv3-lan-adj-sid-sub-tlvs;
+    uses ospfv2-adj-sid-sub-tlvs;
+    uses ospfv2-lan-adj-sid-sub-tlvs;
   }
 
   augment "/rt:routing/"
