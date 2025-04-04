@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-43"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-44"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing over the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-43"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-44"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -1717,7 +1717,7 @@ module ietf-ospf-sr-mpls {
         Author affiliation with The MITRE Corporation is provided for
         identification purposes only, and is not intended to convey or imply MITRE's
         concurrence with, or support for, the positions, opinions or viewpoints
-        expressed.  MITRE has approved this document for Public Release,
+        expressed.  MITRE has agreed to this document for Public Release,
         Distribution Unlimited, with Public Release Case Number 18-3281. This
         approval allows the MITRE employee to release contributions externally and
         does not assert authority to publish.
