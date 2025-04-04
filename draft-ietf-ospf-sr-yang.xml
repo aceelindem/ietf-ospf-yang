@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-41"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-42"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing over the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-41"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-42"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -146,12 +146,13 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   </section>
   <section numbered="true" toc="default"> <name>OSPF Segment Routing over MPLS YANG Data Model Scope</name>
     <t>
-      This document defines a YANG data model for OSPF Segment Routing Extensions
+      The YANG data model in this document consists of a single YANG module, ietf-ospf-sr-mpls.  
+      The ietf-ospf-sr-mpls YANG module includes extensions for OSPF Segment Routing Extensions
       for both OSPFv2 <xref target="RFC8665" format="default"/> and
       OSPFv3 <xref target="RFC8666" format="default"/>.
     </t>
     <t>
-      The OSPF SR YANG module requires support for the base segment
+      The ietf-ospf-sr-mpls YANG module requires support for the base segment
       routing module <xref target="RFC9020" format="default"/>,
       which defines the global segment routing configuration independent
       of any specific routing protocol configuration, and support of OSPF base
@@ -159,14 +160,14 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
       OSPF configuration and state.
     </t>
     <t>
-      The ietf-ospf-sr-mpls data module defines both the data nodes to configure OSPF
+      The ietf-ospf-sr-mpls module defines both the data nodes to configure OSPF
       segment routing MPLS extensions and the additions to the OSPF Link State Advertisements (LSAs) necessary
       to support MPLS segment routing. The OSPF configuration includes:
     </t>
     <ul spacing="normal">
       <li>
         OSPF instance level configuration imported from the ietf-segment-routing-mpls
-        data module including the mapping server bindings and the per-protocol Segment Routing
+        YANG module including the mapping server bindings and the per-protocol Segment Routing
         Global Block (SRGB) (refer to the sr-protocol grouping <xref target="RFC9020"/>).
       </li>
       <li>
@@ -178,7 +179,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
         OSPF interface level configuration for adjacency SIDs corresponding to specific
         neighbors on multi-access interfaces (OSPF interface type broadcast or Non-Broadcast
         Multi-Access (NBMA)). The adjacency-sid definitions are imported from tht ietf-segment-routing-mpls
-        data module (refer to the igp-interface grouping <xref target="RFC9020"/>).
+        YANG module (refer to the igp-interface grouping <xref target="RFC9020"/>).
       </li>
       <li>
         OSPF interface level configuration for Topology-Independent Loop-Free Alternative (TI-LFA) using
@@ -246,14 +247,14 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   </section>
 
 <section numbered="true" toc="default">
-  <name>OSPF Segment Routing over MPLS YANG Data Module</name>
+  <name>OSPF Segment Routing over MPLS YANG Module</name>
   <t>
     <xref target="RFC2328"/>, <xref target="RFC4915"/>,
     <xref target="RFC5340"/>, <xref target="RFC6991"/>,
     <xref target="RFC8102"/>, <xref target="RFC8294"/>,
     <xref target="RFC8349"/>, <xref target="RFC9587"/>, and
     <xref target="I-D.ietf-rtgwg-segment-routing-ti-lfa" format="default"/>
-    are referenced in the YANG data module.
+    are referenced in the YANG module.
   </t>
   <figure>
     <artwork><![CDATA[
@@ -1620,7 +1621,7 @@ module ietf-ospf-sr-mpls {
 
 <section anchor="Security" numbered="true" toc="default">  <name>Security Considerations</name>
 <t>
-   The ietf-ospf-sr-mpls YANG module defines a data module that is
+   The ietf-ospf-sr-mpls YANG module defines a data model that is
    designed to be accessed via YANG-based management protocols, such as
    NETCONF <xref target="RFC6241"/> and RESTCONF <xref target="RFC8040"/>.
    These protocols have to use a secure transport layer (e.g., SSH
@@ -1694,7 +1695,7 @@ module ietf-ospf-sr-mpls {
       <name>Acknowledgements</name>
       <t>
         The authors wish to thank Dean Bogdanovic and Kiran Koushik Agrahara Sreenivasa
-        for their YANG data module discussions.
+        for their YANG module discussions.
       </t>
       <t>
         The authors wish to thank Yi Yang, Alexander Clemm,
@@ -1804,7 +1805,7 @@ filing system or remote ones accessed by http (http://domain/dir/... ).-->
     </references>
     <section numbered="true" toc="default">
         <name>A Configuration Example</name>
-        <t>The following is an XML example using the OSPF SR YANG module,
+        <t>The following is an XML example using the ietf-ospf-sr-mpls YANG module,
            and RFC 9020.</t>
         <t>Note: '\' line wrapping per <xref target="RFC8792" format="default"/>. </t>
         <artwork name="" type="" align="left" alt=""><![CDATA[
