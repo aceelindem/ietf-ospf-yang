@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-44"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-45"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing over the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-44"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-45"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -261,7 +261,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   </t>
   <figure>
     <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-sr-mpls@2025-04-04.yang"
+<CODE BEGINS> file "ietf-ospf-sr-mpls@2025-04-14.yang"
 module ietf-ospf-sr-mpls {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr-mpls";
@@ -355,7 +355,7 @@ module ietf-ospf-sr-mpls {
   // RFC Ed.: Replace XXXX with actual RFC number and remove
   // this note
 
-  revision 2025-04-04 {
+  revision 2025-04-14 {
     description
       "Initial revision.";
     reference
@@ -364,7 +364,7 @@ module ietf-ospf-sr-mpls {
   }
 
   // RFC Ed.: Replace XXXX with actual RFC number.
-  // Also, replace '2025-04-04' with the module publication date
+  // Also, replace '2025-04-14' with the module publication date
   // in the format (YYYY-MM-DD) and remove this note.
 
   feature remote-lfa-sr {
@@ -526,7 +526,7 @@ module ietf-ospf-sr-mpls {
     reference
       "RFC 8665: OSPF Extensions for Segment Routing, Section 5
        RFC 8666: OSPFv3 Extensions for Segment Routing, Section 3";
-    choice sid-value {
+    choice sid {
       case sid-label {
         leaf label-value {
           type uint32 {
@@ -1969,7 +1969,7 @@ augment /rt:routing/rt:control-plane-protocols
         |     |  +--ro flag*   identityref
         |     +--ro mt-id?               uint8
         |     +--ro algorithm?           identityref
-        |     +--ro (sid-value)?
+        |     +--ro (sid)?
         |        +--:(sid-label)
         |        |  +--ro label-value?   uint32
         |        +--:(sid-index)
@@ -1982,9 +1982,8 @@ augment /rt:routing/rt:control-plane-protocols
 augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:database
           /ospf:as-scope-lsa-type/ospf:as-scope-lsas
-          /ospf:as-scope-lsa/ospf:version/ospf:ospfv2
-          /ospf:ospfv2/ospf:body/ospf:opaque
-          /ospf:extended-prefix-opaque:
+          /ospf:as-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+          /ospf:body/ospf:opaque/ospf:extended-prefix-opaque:
   +--ro extended-prefix-range-tlvs
      +--ro extended-prefix-range-tlv* []
         +--ro prefix-length?                 uint8
@@ -2000,7 +1999,7 @@ augment /rt:routing/rt:control-plane-protocols
         |     |  +--ro flag*   identityref
         |     +--ro mt-id?               uint8
         |     +--ro algorithm?           identityref
-        |     +--ro (sid-value)?
+        |     +--ro (sid)?
         |        +--:(sid-label)
         |        |  +--ro label-value?   uint32
         |        +--:(sid-index)
@@ -2022,7 +2021,7 @@ augment /rt:routing/rt:control-plane-protocols
         |  +--ro flag*   identityref
         +--ro mt-id?               uint8
         +--ro algorithm?           identityref
-        +--ro (sid-value)?
+        +--ro (sid)?
            +--:(sid-label)
            |  +--ro label-value?   uint32
            +--:(sid-index)
@@ -2030,16 +2029,16 @@ augment /rt:routing/rt:control-plane-protocols
 augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:database
           /ospf:as-scope-lsa-type/ospf:as-scope-lsas
-          /ospf:as-scope-lsa/ospf:version/ospf:ospfv2
-          /ospf:ospfv2/ospf:body/ospf:opaque
-          /ospf:extended-prefix-opaque/ospf:extended-prefix-tlv:
+          /ospf:as-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+          /ospf:body/ospf:opaque/ospf:extended-prefix-opaque
+          /ospf:extended-prefix-tlv:
   +--ro prefix-sid-sub-tlvs
      +--ro prefix-sid-sub-tlv* []
         +--ro prefix-sid-flags
         |  +--ro flag*   identityref
         +--ro mt-id?               uint8
         +--ro algorithm?           identityref
-        +--ro (sid-value)?
+        +--ro (sid)?
            +--:(sid-label)
            |  +--ro label-value?   uint32
            +--:(sid-index)
@@ -2056,7 +2055,7 @@ augment /rt:routing/rt:control-plane-protocols
   |     |  +--ro flag*   identityref
   |     +--ro mt-id?               uint8
   |     +--ro weight?              uint8
-  |     +--ro (sid-value)?
+  |     +--ro (sid)?
   |        +--:(sid-label)
   |        |  +--ro label-value?   uint32
   |        +--:(sid-index)
@@ -2068,7 +2067,7 @@ augment /rt:routing/rt:control-plane-protocols
         +--ro mt-id?                uint8
         +--ro weight?               uint8
         +--ro neighbor-router-id?   rt-types:router-id
-        +--ro (sid-value)?
+        +--ro (sid)?
            +--:(sid-label)
            |  +--ro label-value?    uint32
            +--:(sid-index)
@@ -2086,7 +2085,7 @@ augment /rt:routing/rt:control-plane-protocols
   |     +--ro range-size?    rt-types:uint24
   |     +--ro sid-sub-tlv
   |        +--ro length?              uint16
-  |        +--ro (sid-value)?
+  |        +--ro (sid)?
   |           +--:(sid-label)
   |           |  +--ro label-value?   uint32
   |           +--:(sid-index)
@@ -2096,7 +2095,7 @@ augment /rt:routing/rt:control-plane-protocols
   |     +--ro range-size?    rt-types:uint24
   |     +--ro sid-sub-tlv
   |        +--ro length?              uint16
-  |        +--ro (sid-value)?
+  |        +--ro (sid)?
   |           +--:(sid-label)
   |           |  +--ro label-value?   uint32
   |           +--:(sid-index)
@@ -2106,8 +2105,8 @@ augment /rt:routing/rt:control-plane-protocols
 augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:database
           /ospf:as-scope-lsa-type/ospf:as-scope-lsas
-          /ospf:as-scope-lsa/ospf:version/ospf:ospfv2
-          /ospf:ospfv2/ospf:body/ospf:opaque/ospf:ri-opaque:
+          /ospf:as-scope-lsa/ospf:version/ospf:ospfv2/ospf:ospfv2
+          /ospf:body/ospf:opaque/ospf:ri-opaque:
   +--ro sr-algorithm-tlv
   |  +--ro sr-algorithm*   identityref
   +--ro sid-range-tlvs
@@ -2115,7 +2114,7 @@ augment /rt:routing/rt:control-plane-protocols
   |     +--ro range-size?    rt-types:uint24
   |     +--ro sid-sub-tlv
   |        +--ro length?              uint16
-  |        +--ro (sid-value)?
+  |        +--ro (sid)?
   |           +--:(sid-label)
   |           |  +--ro label-value?   uint32
   |           +--:(sid-index)
@@ -2125,7 +2124,7 @@ augment /rt:routing/rt:control-plane-protocols
   |     +--ro range-size?    rt-types:uint24
   |     +--ro sid-sub-tlv
   |        +--ro length?              uint16
-  |        +--ro (sid-value)?
+  |        +--ro (sid)?
   |           +--:(sid-label)
   |           |  +--ro label-value?   uint32
   |           +--:(sid-index)
@@ -2135,8 +2134,8 @@ augment /rt:routing/rt:control-plane-protocols
 augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:database
           /ospf:as-scope-lsa-type/ospf:as-scope-lsas
-          /ospf:as-scope-lsa/ospf:version/ospf:ospfv3
-          /ospf:ospfv3/ospf:body/ospf:router-information:
+          /ospf:as-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+          /ospf:body/ospf:router-information:
   +--ro sr-algorithm-tlv
   |  +--ro sr-algorithm*   identityref
   +--ro sid-range-tlvs
@@ -2144,7 +2143,7 @@ augment /rt:routing/rt:control-plane-protocols
   |     +--ro range-size?    rt-types:uint24
   |     +--ro sid-sub-tlv
   |        +--ro length?              uint16
-  |        +--ro (sid-value)?
+  |        +--ro (sid)?
   |           +--:(sid-label)
   |           |  +--ro label-value?   uint32
   |           +--:(sid-index)
@@ -2154,7 +2153,7 @@ augment /rt:routing/rt:control-plane-protocols
   |     +--ro range-size?    rt-types:uint24
   |     +--ro sid-sub-tlv
   |        +--ro length?              uint16
-  |        +--ro (sid-value)?
+  |        +--ro (sid)?
   |           +--:(sid-label)
   |           |  +--ro label-value?   uint32
   |           +--:(sid-index)
@@ -2174,7 +2173,7 @@ augment /rt:routing/rt:control-plane-protocols
   |     +--ro range-size?    rt-types:uint24
   |     +--ro sid-sub-tlv
   |        +--ro length?              uint16
-  |        +--ro (sid-value)?
+  |        +--ro (sid)?
   |           +--:(sid-label)
   |           |  +--ro label-value?   uint32
   |           +--:(sid-index)
@@ -2184,7 +2183,7 @@ augment /rt:routing/rt:control-plane-protocols
   |     +--ro range-size?    rt-types:uint24
   |     +--ro sid-sub-tlv
   |        +--ro length?              uint16
-  |        +--ro (sid-value)?
+  |        +--ro (sid)?
   |           +--:(sid-label)
   |           |  +--ro label-value?   uint32
   |           +--:(sid-index)
@@ -2200,8 +2199,7 @@ augment /rt:routing/rt:control-plane-protocols
   +--ro ospfv3-extended-prefix-range-tlvs
      +--ro extended-prefix-range-tlv* []
         +--ro prefix-length?         uint8
-        +--ro af?
-        |       iana-rt-types:address-family
+        +--ro af?                    iana-rt-types:address-family
         +--ro range-size?            uint16
         +--ro prefix?                inet:ip-prefix
         +--ro prefix-sid-sub-tlvs
@@ -2209,7 +2207,7 @@ augment /rt:routing/rt:control-plane-protocols
         |     +--ro ospfv3-prefix-sid-flags
         |     |  +--ro flag*   identityref
         |     +--ro algorithm?                 identityref
-        |     +--ro (sid-value)?
+        |     +--ro (sid)?
         |        +--:(sid-label)
         |        |  +--ro label-value?         uint32
         |        +--:(sid-index)
@@ -2228,8 +2226,7 @@ augment /rt:routing/rt:control-plane-protocols
   +--ro ospfv3-extended-prefix-range-tlvs
      +--ro extended-prefix-range-tlv* []
         +--ro prefix-length?         uint8
-        +--ro af?
-        |       iana-rt-types:address-family
+        +--ro af?                    iana-rt-types:address-family
         +--ro range-size?            uint16
         +--ro prefix?                inet:ip-prefix
         +--ro prefix-sid-sub-tlvs
@@ -2237,7 +2234,7 @@ augment /rt:routing/rt:control-plane-protocols
         |     +--ro ospfv3-prefix-sid-flags
         |     |  +--ro flag*   identityref
         |     +--ro algorithm?                 identityref
-        |     +--ro (sid-value)?
+        |     +--ro (sid)?
         |        +--:(sid-label)
         |        |  +--ro label-value?         uint32
         |        +--:(sid-index)
@@ -2250,13 +2247,12 @@ augment /rt:routing/rt:control-plane-protocols
 augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:database
           /ospf:as-scope-lsa-type/ospf:as-scope-lsas
-          /ospf:as-scope-lsa/ospf:version/ospf:ospfv3
-          /ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-as-external:
+          /ospf:as-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+          /ospf:body/ospfv3-e-lsa:e-as-external:
   +--ro ospfv3-extended-prefix-range-tlvs
      +--ro extended-prefix-range-tlv* []
         +--ro prefix-length?         uint8
-        +--ro af?
-        |       iana-rt-types:address-family
+        +--ro af?                    iana-rt-types:address-family
         +--ro range-size?            uint16
         +--ro prefix?                inet:ip-prefix
         +--ro prefix-sid-sub-tlvs
@@ -2264,7 +2260,7 @@ augment /rt:routing/rt:control-plane-protocols
         |     +--ro ospfv3-prefix-sid-flags
         |     |  +--ro flag*   identityref
         |     +--ro algorithm?                 identityref
-        |     +--ro (sid-value)?
+        |     +--ro (sid)?
         |        +--:(sid-label)
         |        |  +--ro label-value?         uint32
         |        +--:(sid-index)
@@ -2278,13 +2274,11 @@ augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:areas
           /ospf:area/ospf:database/ospf:area-scope-lsa-type
           /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-          /ospf:ospfv3/ospf:ospfv3/ospf:body
-          /ospfv3-e-lsa:e-nssa:
+          /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-nssa:
   +--ro ospfv3-extended-prefix-range-tlvs
      +--ro extended-prefix-range-tlv* []
         +--ro prefix-length?         uint8
-        +--ro af?
-        |       iana-rt-types:address-family
+        +--ro af?                    iana-rt-types:address-family
         +--ro range-size?            uint16
         +--ro prefix?                inet:ip-prefix
         +--ro prefix-sid-sub-tlvs
@@ -2292,7 +2286,7 @@ augment /rt:routing/rt:control-plane-protocols
         |     +--ro ospfv3-prefix-sid-flags
         |     |  +--ro flag*   identityref
         |     +--ro algorithm?                 identityref
-        |     +--ro (sid-value)?
+        |     +--ro (sid)?
         |        +--:(sid-label)
         |        |  +--ro label-value?         uint32
         |        +--:(sid-index)
@@ -2304,18 +2298,18 @@ augment /rt:routing/rt:control-plane-protocols
               +--ro value?    yang:hex-string
 augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:areas
-          /ospf:area/ospf:interfaces/ospf:interface
-          /ospf:database/ospf:link-scope-lsa-type
-          /ospf:link-scope-lsas/ospf:link-scope-lsa/ospf:version
-          /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-link
-          /ospfv3-e-lsa:e-link-tlvs
-          /ospfv3-e-lsa:intra-prefix-tlv/ospfv3-e-lsa:sub-tlvs:
+          /ospf:area/ospf:interfaces/ospf:interface/ospf:database
+          /ospf:link-scope-lsa-type/ospf:link-scope-lsas
+          /ospf:link-scope-lsa/ospf:version/ospf:ospfv3
+          /ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-link
+          /ospfv3-e-lsa:e-link-tlvs/ospfv3-e-lsa:intra-prefix-tlv
+          /ospfv3-e-lsa:sub-tlvs:
   +--ro prefix-sid-sub-tlvs
      +--ro prefix-sid-sub-tlv* []
         +--ro ospfv3-prefix-sid-flags
         |  +--ro flag*   identityref
         +--ro algorithm?                 identityref
-        +--ro (sid-value)?
+        +--ro (sid)?
            +--:(sid-label)
            |  +--ro label-value?         uint32
            +--:(sid-index)
@@ -2333,7 +2327,7 @@ augment /rt:routing/rt:control-plane-protocols
         +--ro ospfv3-prefix-sid-flags
         |  +--ro flag*   identityref
         +--ro algorithm?                 identityref
-        +--ro (sid-value)?
+        +--ro (sid)?
            +--:(sid-label)
            |  +--ro label-value?         uint32
            +--:(sid-index)
@@ -2351,7 +2345,7 @@ augment /rt:routing/rt:control-plane-protocols
         +--ro ospfv3-prefix-sid-flags
         |  +--ro flag*   identityref
         +--ro algorithm?                 identityref
-        +--ro (sid-value)?
+        +--ro (sid)?
            +--:(sid-label)
            |  +--ro label-value?         uint32
            +--:(sid-index)
@@ -2359,17 +2353,16 @@ augment /rt:routing/rt:control-plane-protocols
 augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:database
           /ospf:as-scope-lsa-type/ospf:as-scope-lsas
-          /ospf:as-scope-lsa/ospf:version/ospf:ospfv3
-          /ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-as-external
+          /ospf:as-scope-lsa/ospf:version/ospf:ospfv3/ospf:ospfv3
+          /ospf:body/ospfv3-e-lsa:e-as-external
           /ospfv3-e-lsa:e-external-tlvs
-          /ospfv3-e-lsa:external-prefix-tlv
-          /ospfv3-e-lsa:sub-tlvs:
+          /ospfv3-e-lsa:external-prefix-tlv/ospfv3-e-lsa:sub-tlvs:
   +--ro prefix-sid-sub-tlvs
      +--ro prefix-sid-sub-tlv* []
         +--ro ospfv3-prefix-sid-flags
         |  +--ro flag*   identityref
         +--ro algorithm?                 identityref
-        +--ro (sid-value)?
+        +--ro (sid)?
            +--:(sid-label)
            |  +--ro label-value?         uint32
            +--:(sid-index)
@@ -2380,14 +2373,13 @@ augment /rt:routing/rt:control-plane-protocols
           /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
           /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-nssa
           /ospfv3-e-lsa:e-external-tlvs
-          /ospfv3-e-lsa:external-prefix-tlv
-          /ospfv3-e-lsa:sub-tlvs:
+          /ospfv3-e-lsa:external-prefix-tlv/ospfv3-e-lsa:sub-tlvs:
   +--ro prefix-sid-sub-tlvs
      +--ro prefix-sid-sub-tlv* []
         +--ro ospfv3-prefix-sid-flags
         |  +--ro flag*   identityref
         +--ro algorithm?                 identityref
-        +--ro (sid-value)?
+        +--ro (sid)?
            +--:(sid-label)
            |  +--ro label-value?         uint32
            +--:(sid-index)
@@ -2396,15 +2388,15 @@ augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:areas
           /ospf:area/ospf:database/ospf:area-scope-lsa-type
           /ospf:area-scope-lsas/ospf:area-scope-lsa/ospf:version
-          /ospf:ospfv3/ospf:ospfv3/ospf:body
-          /ospfv3-e-lsa:e-router/ospfv3-e-lsa:e-router-tlvs
-          /ospfv3-e-lsa:link-tlv/ospfv3-e-lsa:sub-tlvs:
+          /ospf:ospfv3/ospf:ospfv3/ospf:body/ospfv3-e-lsa:e-router
+          /ospfv3-e-lsa:e-router-tlvs/ospfv3-e-lsa:link-tlv
+          /ospfv3-e-lsa:sub-tlvs:
   +--ro adj-sid-sub-tlvs
   |  +--ro adj-sid-sub-tlv* []
   |     +--ro adj-sid-flags
   |     |  +--ro flag*   identityref
   |     +--ro weight?              uint8
-  |     +--ro (sid-value)?
+  |     +--ro (sid)?
   |        +--:(sid-label)
   |        |  +--ro label-value?   uint32
   |        +--:(sid-index)
@@ -2415,7 +2407,7 @@ augment /rt:routing/rt:control-plane-protocols
         |  +--ro flag*   identityref
         +--ro weight?               uint8
         +--ro neighbor-router-id?   rt-types:router-id
-        +--ro (sid-value)?
+        +--ro (sid)?
            +--:(sid-label)
            |  +--ro label-value?    uint32
            +--:(sid-index)
