@@ -1823,12 +1823,13 @@ filing system or remote ones accessed by http (http://domain/dir/... ).-->
           <areas>
             <area>
               <area-id>0.0.0.0</area-id>
-              <segment-routing></segment-routing>
+              <segment-routing xmlns="urn:ietf:params:xml:ns:yang:\
+                ietf-ospf-sr-mpls"></segment-routing>
               <interfaces>
                 <interface>
                   <name>eth0</name>
-                  <segment-routing xmlns="urn:ietf:params:xml:ns\
-                    :yang:ietf-ospf-sr-mpls">
+                  <segment-routing xmlns="urn:ietf:params:xml:ns:\
+                    yang:ietf-ospf-sr-mpls">
                     <adjacency-sid>
                       <adj-sids>
                         <value>3888</value>
@@ -1861,39 +1862,49 @@ filing system or remote ones accessed by http (http://domain/dir/... ).-->
   "ietf-routing:routing": {
     "router-id": "1.1.1.1",
     "control-plane-protocols": {
-      "control-plane-protocol": {
-        "type": "ietf-ospf:ospfv2",
-        "name": "OSPFv2",
-        "ietf-ospf:ospf": {
-          "areas": {
-            "area": {
-              "area-id": "0.0.0.0",
-              "ietf-ospf-sr-mpls:segment-routing": { },
-              "interfaces": {
-                "interface": {
-                  "name": "eth0",
-                  "ietf-ospf-sr-mpls:segment-routing": {
-                    "adjacency-sid": {
-                      "adj-sids": {
-                        "value": 3888
+      "control-plane-protocol": [
+        {
+          "type": "ietf-ospf:ospfv2",
+          "name": "OSPFv2",
+          "ietf-ospf:ospf": {
+            "areas": {
+              "area": [
+                {
+                  "area-id": "0.0.0.0",
+                  "interfaces": {
+                    "interface": [
+                      {
+                        "name": "eth0",
+                        "ietf-ospf-sr-mpls:segment-routing": {
+                          "adjacency-sid": {
+                            "adj-sids": [
+                              {
+                                "value": 3888
+                              }
+                            ]
+                          }
+                        }
                       }
-                    }
-                  }
+                    ]
+                  },
+                  "ietf-ospf-sr-mpls:segment-routing": {}
                 }
-              }
-            }
-          },
-          "ietf-ospf-sr-mpls:segment-routing": {
-            "enabled": true
-          },
-          "ietf-ospf-sr-mpls:protocol-srgb": {
-            "srgb": {
-              "lower-bound": 4000,
-              "upper-bound": 5000
+              ]
+            },
+            "ietf-ospf-sr-mpls:segment-routing": {
+              "enabled": true
+            },
+            "ietf-ospf-sr-mpls:protocol-srgb": {
+              "srgb": [
+                {
+                  "lower-bound": 4000,
+                  "upper-bound": 5000
+                }
+              ]
             }
           }
         }
-      }
+      ]
     }
   }
 }
