@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-45"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-46"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing over the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-45"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-46"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -37,15 +37,6 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <author fullname="Yingzhen Qu" initials="Y" surname="Qu">
     <organization>Futurewei Technologies</organization>
     <address>
-      <postal>
-        <street>2330 Central Expressway</street>
-        <!-- Reorder these if your country does things differently -->
-
-        <city>Santa Clara</city>
-        <region>CA</region>
-        <code>95050</code>
-        <country>USA</country>
-      </postal>
       <phone/>
       <email>yingzhen.ietf@gmail.com</email>
       <!-- uri and facsimile elements may also be added -->
