@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-46"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-47"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing over the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-46"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-47"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -438,10 +438,10 @@ module ietf-ospf-sr-mpls {
   identity ia-flag {
     base extended-prefix-range-flag;
     description
-      "Inter-Area flag.";
+      "Inter-Area flag. Note that this is only applicable to OSPFv2
+       since OSPFv3 advertises separate Inter-Area extended-LSA.";
     reference
-      "RFC 8665: OSPF Extensions for Segment Routing, Section 4
-       RFC 8666: OSPFv3 Extensions for Segment Routing, Section 5";
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 4";
   }
 
   identity adj-sid-flag {
@@ -589,8 +589,7 @@ module ietf-ospf-sr-mpls {
             range "0 .. 127";
           }
           description
-            "Multi-topology ID. Topologies range from 0-127 and
-             return of any other value would indicate an error.";
+            "Multi-topology ID.";
           reference
             "RFC 4915: Multi-Topology (MT) Routing in OSPF";
         }
@@ -1671,11 +1670,33 @@ module ietf-ospf-sr-mpls {
     subtrees and data nodes have particular sensitivities/
     vulnerabilities:
  </t>
- <t>
-   The module ietf-ospf-sr-mpls augments base OSPF module Link State
-   Database (LSDB) with various TLVs. Knowledge of these data nodes
-   can be used to attack other routers in the OSPF domain.
- </t>
+ <ul empty="true" spacing="normal">
+   <li>
+     The module ietf-ospf-sr-mpls augments base OSPF module Link State
+     Database (LSDB) with various TLVs. Knowledge of these data nodes
+     can be used to attack other routers in the OSPF domain. These attacks
+     are documented in <xref target="RFC9129"/>.
+   </li>
+   <li>
+     Knowledge of the Prefix and Adjacency SIDs advertised in LSAs
+     could facilitate a targeted attack on the data-plane by knowing the
+     topology and path for MPLS segment-routed packets. Examples include
+     the OSPFv2 extended-prefix-opaque-LSA/prefix-sid-sub-tlvs and
+     OSPFv3 e-router-tlvs/link-tlv/sub-tlvs/ospfv3-lan-adj-sid-sub-tlvs.
+   </li>
+   <li>
+     Knowledge of Prefix and Adjaceny SIDs may also divulge a view of the segment
+     routing network topology architecture which may be considered a proprietary
+     asset.
+   </li>
+   <li>
+     Knowledge of the advertised SID/Label Range TLVs,
+     SR Local Block TLVs and Segment Routing Mapping Server (SRMS) TLVs may facilitate
+     a Denial of Service (DoS) attack on the advertising node's SR
+     and SRMS functionality. Examples include augmentations to the
+     OSPFv2 ri-opaque/sid-range-tlvs and OSPFv3 router-information/local-block-tlvs.
+   </li>
+ </ul>
  <t>
    This YANG module uses groupings from other YANG modules that
    define nodes that may be considered sensitive or vulnerable
