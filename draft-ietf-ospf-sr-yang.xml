@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-48"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-49"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing over the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-48"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-49"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -252,7 +252,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   </t>
   <figure>
     <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-sr-mpls@2025-04-14.yang"
+<CODE BEGINS> file "ietf-ospf-sr-mpls@2025-05-05.yang"
 module ietf-ospf-sr-mpls {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr-mpls";
@@ -346,7 +346,7 @@ module ietf-ospf-sr-mpls {
   // RFC Ed.: Replace XXXX with actual RFC number and remove
   // this note
 
-  revision 2025-04-14 {
+  revision 2025-05-05 {
     description
       "Initial revision.";
     reference
@@ -515,7 +515,8 @@ module ietf-ospf-sr-mpls {
         ID/Index/Label field is a 3-octet local label where the
         20 rightmost bits are used for encoding the label value.";
     reference
-      "RFC 8665: OSPF Extensions for Segment Routing, Section 5
+      "RFC 8665: OSPF Extensions for Segment Routing, Section 2.1
+       RFC 8665: OSPF Extensions for Segment Routing, Section 5
        RFC 8666: OSPFv3 Extensions for Segment Routing, Section 3";
     choice sid {
       case sid-label {
@@ -537,27 +538,6 @@ module ietf-ospf-sr-mpls {
       description
         "Choice of either a 20-bit MPLS label or 32-bit index into
          an advertised label space.";
-    }
-  }
-
-  grouping sid-sub-tlv {
-    description
-      "SID/Label sub-TLV grouping.";
-    reference
-      "RFC 8665: OSPF Extensions for Segment Routing
-       (Section 2.1)";
-    container sid-sub-tlv {
-      description
-        "Used to advertise the SID/Label associated with a
-         prefix or adjacency.";
-      leaf length {
-        type uint16;
-        description
-          "Length of the SID value. YANG model specification
-           is necessary since it dictates the semantics of the
-           SID.";
-      }
-      uses sid-tlv-encoding;
     }
   }
 
@@ -780,7 +760,7 @@ module ietf-ospf-sr-mpls {
           description
             "SID range.";
         }
-        uses sid-sub-tlv;
+        uses sid-tlv-encoding;
       }
     }
   }
@@ -804,7 +784,7 @@ module ietf-ospf-sr-mpls {
             "SID range. The return of a zero value would indicate
              an error.";
         }
-        uses sid-sub-tlv;
+        uses sid-tlv-encoding;
       }
     }
   }
@@ -2105,24 +2085,20 @@ augment /rt:routing/rt:control-plane-protocols
   |  +--ro sr-algorithm*   identityref
   +--ro sid-range-tlvs
   |  +--ro sid-range-tlv* []
-  |     +--ro range-size?    rt-types:uint24
-  |     +--ro sid-sub-tlv
-  |        +--ro length?              uint16
-  |        +--ro (sid)?
-  |           +--:(sid-label)
-  |           |  +--ro label-value?   uint32
-  |           +--:(sid-index)
-  |              +--ro index-value?   uint32
+  |     +--ro range-size?          rt-types:uint24
+  |     +--ro (sid)?
+  |        +--:(sid-label)
+  |        |  +--ro label-value?   uint32
+  |        +--:(sid-index)
+  |           +--ro index-value?   uint32
   +--ro local-block-tlvs
   |  +--ro local-block-tlv* []
-  |     +--ro range-size?    rt-types:uint24
-  |     +--ro sid-sub-tlv
-  |        +--ro length?              uint16
-  |        +--ro (sid)?
-  |           +--:(sid-label)
-  |           |  +--ro label-value?   uint32
-  |           +--:(sid-index)
-  |              +--ro index-value?   uint32
+  |     +--ro range-size?          rt-types:uint24
+  |     +--ro (sid)?
+  |        +--:(sid-label)
+  |        |  +--ro label-value?   uint32
+  |        +--:(sid-index)
+  |           +--ro index-value?   uint32
   +--ro srms-preference-tlv
      +--ro preference?   uint8
 augment /rt:routing/rt:control-plane-protocols
@@ -2134,24 +2110,20 @@ augment /rt:routing/rt:control-plane-protocols
   |  +--ro sr-algorithm*   identityref
   +--ro sid-range-tlvs
   |  +--ro sid-range-tlv* []
-  |     +--ro range-size?    rt-types:uint24
-  |     +--ro sid-sub-tlv
-  |        +--ro length?              uint16
-  |        +--ro (sid)?
-  |           +--:(sid-label)
-  |           |  +--ro label-value?   uint32
-  |           +--:(sid-index)
-  |              +--ro index-value?   uint32
+  |     +--ro range-size?          rt-types:uint24
+  |     +--ro (sid)?
+  |        +--:(sid-label)
+  |        |  +--ro label-value?   uint32
+  |        +--:(sid-index)
+  |           +--ro index-value?   uint32
   +--ro local-block-tlvs
   |  +--ro local-block-tlv* []
-  |     +--ro range-size?    rt-types:uint24
-  |     +--ro sid-sub-tlv
-  |        +--ro length?              uint16
-  |        +--ro (sid)?
-  |           +--:(sid-label)
-  |           |  +--ro label-value?   uint32
-  |           +--:(sid-index)
-  |              +--ro index-value?   uint32
+  |     +--ro range-size?          rt-types:uint24
+  |     +--ro (sid)?
+  |        +--:(sid-label)
+  |        |  +--ro label-value?   uint32
+  |        +--:(sid-index)
+  |           +--ro index-value?   uint32
   +--ro srms-preference-tlv
      +--ro preference?   uint8
 augment /rt:routing/rt:control-plane-protocols
@@ -2163,24 +2135,20 @@ augment /rt:routing/rt:control-plane-protocols
   |  +--ro sr-algorithm*   identityref
   +--ro sid-range-tlvs
   |  +--ro sid-range-tlv* []
-  |     +--ro range-size?    rt-types:uint24
-  |     +--ro sid-sub-tlv
-  |        +--ro length?              uint16
-  |        +--ro (sid)?
-  |           +--:(sid-label)
-  |           |  +--ro label-value?   uint32
-  |           +--:(sid-index)
-  |              +--ro index-value?   uint32
+  |     +--ro range-size?          rt-types:uint24
+  |     +--ro (sid)?
+  |        +--:(sid-label)
+  |        |  +--ro label-value?   uint32
+  |        +--:(sid-index)
+  |           +--ro index-value?   uint32
   +--ro local-block-tlvs
   |  +--ro local-block-tlv* []
-  |     +--ro range-size?    rt-types:uint24
-  |     +--ro sid-sub-tlv
-  |        +--ro length?              uint16
-  |        +--ro (sid)?
-  |           +--:(sid-label)
-  |           |  +--ro label-value?   uint32
-  |           +--:(sid-index)
-  |              +--ro index-value?   uint32
+  |     +--ro range-size?          rt-types:uint24
+  |     +--ro (sid)?
+  |        +--:(sid-label)
+  |        |  +--ro label-value?   uint32
+  |        +--:(sid-index)
+  |           +--ro index-value?   uint32
   +--ro srms-preference-tlv
      +--ro preference?   uint8
 augment /rt:routing/rt:control-plane-protocols
@@ -2193,24 +2161,20 @@ augment /rt:routing/rt:control-plane-protocols
   |  +--ro sr-algorithm*   identityref
   +--ro sid-range-tlvs
   |  +--ro sid-range-tlv* []
-  |     +--ro range-size?    rt-types:uint24
-  |     +--ro sid-sub-tlv
-  |        +--ro length?              uint16
-  |        +--ro (sid)?
-  |           +--:(sid-label)
-  |           |  +--ro label-value?   uint32
-  |           +--:(sid-index)
-  |              +--ro index-value?   uint32
+  |     +--ro range-size?          rt-types:uint24
+  |     +--ro (sid)?
+  |        +--:(sid-label)
+  |        |  +--ro label-value?   uint32
+  |        +--:(sid-index)
+  |           +--ro index-value?   uint32
   +--ro local-block-tlvs
   |  +--ro local-block-tlv* []
-  |     +--ro range-size?    rt-types:uint24
-  |     +--ro sid-sub-tlv
-  |        +--ro length?              uint16
-  |        +--ro (sid)?
-  |           +--:(sid-label)
-  |           |  +--ro label-value?   uint32
-  |           +--:(sid-index)
-  |              +--ro index-value?   uint32
+  |     +--ro range-size?          rt-types:uint24
+  |     +--ro (sid)?
+  |        +--:(sid-label)
+  |        |  +--ro label-value?   uint32
+  |        +--:(sid-index)
+  |           +--ro index-value?   uint32
   +--ro srms-preference-tlv
      +--ro preference?   uint8
 augment /rt:routing/rt:control-plane-protocols
