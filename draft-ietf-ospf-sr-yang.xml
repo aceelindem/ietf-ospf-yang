@@ -1157,6 +1157,40 @@ module ietf-ospf-sr-mpls {
     }
   }
 
+  /* Operational states */
+
+  augment "/rt:routing/rt:control-plane-protocols/"
+        + "rt:control-plane-protocol/ospf:ospf/"
+        + "ospf:areas/ospf:area/ospf:interfaces/ospf:interface/"
+        + "ospf:neighbors/ospf:neighbor" {
+    when "derived-from(/rt:routing/rt:control-plane-protocols/"
+       + "rt:control-plane-protocol/rt:type, 'ospf:ospf')" {
+      description
+        "This augments the OSPF routing protocol when used.";
+    }
+    description
+      "This augments OSPF interface adjancency-sid state.";
+    list adjacency-sid {
+      description
+        "List of adjacency Segment IDs.";
+      leaf value {
+        type uint32;
+        description
+          "Value of the Adj-SID.";
+      }
+      leaf weight {
+        type uint8;
+        description
+          "Weight associated with the adjacency SID.";
+      }
+      leaf protection-requested {
+        type boolean;
+        description
+          "Describe if the adjacency SID is protected.";
+      }
+    }
+  }
+
   /*
    * Augmentations for read-only data nodes corresponding to Segment
    * Routing encodings in OSPFv2 and OSPFv3 Link State Advertisements
@@ -1951,6 +1985,14 @@ augment /rt:routing/rt:control-plane-protocols
           /ospf:area/ospf:interfaces/ospf:interface
           /ospf:fast-reroute/ospf:lfa/ospf:remote-lfa:
   +--rw use-segment-routing-path?   boolean {remote-lfa-sr}?
+augment /rt:routing/rt:control-plane-protocols
+        /rt:control-plane-protocol/ospf:ospf/ospf:areas
+        /ospf:area/ospf:interfaces/ospf:interface
+        /ospf:neighbors/ospf:neighbor:
+    +--ro adjacency-sid* []
+       +--ro value?                  uint32
+       +--ro weight?                 uint8
+       +--ro protection-requested?   boolean
 augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:areas
           /ospf:area/ospf:database/ospf:area-scope-lsa-type
