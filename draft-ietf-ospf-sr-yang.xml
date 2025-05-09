@@ -11,7 +11,7 @@
 <?rfc sortrefs="yes"?>
 <?rfc rfcedstyle="yes" ?>
 <?rfc subcompact="no" ?>
-<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-49"
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" category="std" docName="draft-ietf-ospf-sr-yang-50"
 ipr="trust200902" obsoletes="" updates="" submissionType="IETF" xml:lang="en" tocInclude="true"
 symRefs="true" sortRefs="true" consensus="true" version="3">
 <!-- xml2rfc v2v3 conversion 3.16.0 -->
@@ -29,7 +29,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   <title abbrev="OSPF SR MPLS YANG" >
     A YANG Data Model for OSPF Segment Routing over the MPLS Data Plane
   </title>
-  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-49"/>
+  <seriesInfo name="Internet-Draft" value="draft-ietf-ospf-sr-yang-50"/>
   <!-- add 'role="editor"' below for the editors if appropriate -->
 
   <!-- Another author who claims to be an editor -->
@@ -252,7 +252,7 @@ symRefs="true" sortRefs="true" consensus="true" version="3">
   </t>
   <figure>
     <artwork><![CDATA[
-<CODE BEGINS> file "ietf-ospf-sr-mpls@2025-05-05.yang"
+<CODE BEGINS> file "ietf-ospf-sr-mpls@2025-05-09.yang"
 module ietf-ospf-sr-mpls {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ospf-sr-mpls";
@@ -346,7 +346,7 @@ module ietf-ospf-sr-mpls {
   // RFC Ed.: Replace XXXX with actual RFC number and remove
   // this note
 
-  revision 2025-05-05 {
+  revision 2025-05-09 {
     description
       "Initial revision.";
     reference
@@ -1029,18 +1029,6 @@ module ietf-ospf-sr-mpls {
     reference
       "RFC 9020 - YANG Data Model for Segment Routing";
     uses sr-mpls:igp-interface {
-      augment "segment-routing" {
-        leaf enabled {
-          type boolean;
-          default "true";
-          description
-            "Enable or disable segment-routing over MPLS at the OSPF
-             interface level when segment routing over MPLS is
-             enabled at the area level.";
-        }
-        description
-          "Allow explicit enablement of segment routing";
-      }
       augment "segment-routing/adjacency-sid/adj-sids" {
         when "((../../../ospf:interface-type = 'broadcast') or
               (../../../ospf:interface-type = 'non-broadcast'))" {
@@ -1620,7 +1608,6 @@ module ietf-ospf-sr-mpls {
   }
 }
 <CODE ENDS>
-
 ]]></artwork>
 </figure>
 </section>
@@ -1959,16 +1946,15 @@ augment /rt:routing/rt:control-plane-protocols
           /ospf:area/ospf:interfaces/ospf:interface:
   +--rw segment-routing
      +--rw adjacency-sid
-     |  +--rw adj-sids* [value]
-     |  |  +--rw value-type?    enumeration
-     |  |  +--rw value          uint32
-     |  |  +--rw protected?     boolean
-     |  |  +--rw weight?        uint8
-     |  |  +--rw neighbor-id    inet:ip-address
-     |  +--rw advertise-adj-group-sid* [group-id]
-     |  |  +--rw group-id    uint32
-     |  +--rw advertise-protection?      enumeration
-     +--rw enabled?         boolean
+        +--rw adj-sids* [value]
+        |  +--rw value-type?    enumeration
+        |  +--rw value          uint32
+        |  +--rw protected?     boolean
+        |  +--rw weight?        uint8
+        |  +--rw neighbor-id    inet:ip-address
+        +--rw advertise-adj-group-sid* [group-id]
+        |  +--rw group-id    uint32
+        +--rw advertise-protection?      enumeration
 augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:areas
           /ospf:area/ospf:interfaces/ospf:interface
@@ -1986,13 +1972,13 @@ augment /rt:routing/rt:control-plane-protocols
           /ospf:fast-reroute/ospf:lfa/ospf:remote-lfa:
   +--rw use-segment-routing-path?   boolean {remote-lfa-sr}?
 augment /rt:routing/rt:control-plane-protocols
-        /rt:control-plane-protocol/ospf:ospf/ospf:areas
-        /ospf:area/ospf:interfaces/ospf:interface
-        /ospf:neighbors/ospf:neighbor:
-    +--ro adjacency-sid* []
-       +--ro value?                  uint32
-       +--ro weight?                 uint8
-       +--ro protection-requested?   boolean
+          /rt:control-plane-protocol/ospf:ospf/ospf:areas
+          /ospf:area/ospf:interfaces/ospf:interface/ospf:neighbors
+          /ospf:neighbor:
+  +--ro adjacency-sid* []
+     +--ro value?                  uint32
+     +--ro weight?                 uint8
+     +--ro protection-requested?   boolean
 augment /rt:routing/rt:control-plane-protocols
           /rt:control-plane-protocol/ospf:ospf/ospf:areas
           /ospf:area/ospf:database/ospf:area-scope-lsa-type
